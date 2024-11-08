@@ -1,6 +1,6 @@
 "use client";
 
-import { CSSProperties, ReactElement, useEffect, useState } from "react";
+import React, { CSSProperties, ReactElement, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
@@ -38,7 +38,7 @@ interface SparklesTextProps {
    * @description
    * The text to be displayed
    * */
-  text: string;
+  text: ReactElement;
 
   /**
    * @default 10
@@ -75,7 +75,7 @@ const SparklesText: React.FC<SparklesTextProps> = ({
       const starY = `${Math.random() * 100}%`;
       const color = Math.random() > 0.5 ? colors.first : colors.second;
       const delay = Math.random() * 2;
-      const scale = Math.random() * 1 + 0.3;
+      const scale = Math.random()  + 0.3;
       const lifespan = Math.random() * 10 + 5;
       const id = `${starX}-${starY}-${Date.now()}`;
       return { id, x: starX, y: starY, color, delay, scale, lifespan };

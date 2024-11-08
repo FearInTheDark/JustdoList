@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller {
     /**
@@ -21,19 +22,18 @@ class UserController extends Controller {
         $validate = $request->validate([
             'email' => ['email', 'required']
         ]);
-        if ($request['password']) {
-            $validate = array_merge($validate, $request->validate([
-                'password' => ['required', 'min:2', 'confirmed']
-            ]));
-        } else {
-            return back()->with(['success' => 'Email is valid']);
+        if (User::where('email', $validate['email'])->first()) {
+            return back()->withErrors(['email' => 'Email is already taken']);
         }
-//        dd($validate);
-        $user = User::create($validate);
-//        login to $user
-        auth()->login($user);
-        return redirect('/');
+        if (!$request['password'])
+            return back()->with(['success' => 'Email is valid']);
 
+        $validate = array_merge($validate, $request->validate([
+            'password' => ['required', 'min:2', 'confirmed', Password::min(2)->letters()]
+        ]));
+        $user = User::create($validate);
+        auth()->login($user);
+        return redirect('/')->with(['success' => 'User created']);
     }
 
     /**
@@ -60,14 +60,17 @@ class UserController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id) {
-        //
+    public function update(Request $request, User $user) {
+        $validate = $request->validate([
+
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id) {
-        //
+    public function destroy(User $user) {
+        $user->delete();
+        return redirect('/')->with(['success' => 'User deleted']);
     }
 }

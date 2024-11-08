@@ -1,13 +1,15 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
+import {log} from "next/dist/server/typescript/utils";
+import {cn} from "@/lib/utils";
+import {useFetchPOST} from "@/hooks/useFetch";
 
-export default function ThemeMode() {
-    const [theme, setTheme] = useState(true);
-
+export default function ThemeMode({className}) {
+    const [theme, setTheme] = useState(!document.body.classList.contains('dark'));
     function handleSwitch() {
         if (theme) document.body.classList.add("dark");
         else document.body.classList.remove("dark");
-        setTheme(!theme);
-        console.log(theme ? "Switched to Dark Mode" : "Switched to Light Mode");
+        postTheme(theme).then()
+        setTheme(prevState => !prevState);
     }
 
     return (
@@ -19,11 +21,12 @@ export default function ThemeMode() {
                     className="theme-controller"
                     value="synthwave"
                     onClick={handleSwitch}
+                    defaultChecked={!theme}
                 />
 
                 {/*sun icon*/}
                 <svg
-                    className="swap-off h-8 w-8 fill-current"
+                    className={cn("swap-off h-8 w-8 fill-current", className)}
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                 >
@@ -32,7 +35,7 @@ export default function ThemeMode() {
 
                 {/* moon icon */}
                 <svg
-                    className="swap-on h-8 w-8 fill-current"
+                    className={cn("swap-on h-8 w-8 fill-current", className)}
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                 >
@@ -41,4 +44,16 @@ export default function ThemeMode() {
             </label>
         </>
     );
+}
+
+const postTheme = async (theme) => {
+    const response = await fetch('/theme', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({theme: theme ? 'dark' : 'light'})
+    })
+    const data = await response.json();
 }

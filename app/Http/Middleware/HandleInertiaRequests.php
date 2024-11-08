@@ -37,8 +37,9 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'user' => fn () => $request->user()
-                ? $request->user()->only('id', 'name', 'email', 'birthday')
+                ? $request->user()->loadCount('tasks')->only('id', 'name', 'email', 'birthday', 'finished_tasks', 'tasks', 'finished_tasks')
                 : null,
+            'theme' => fn() => $request->session()->get('theme') ?? 'light',
         ]);
     }
 }

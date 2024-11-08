@@ -1,0 +1,36 @@
+/*!* Center the logo in the middle of the viewport *!*/
+/*.intro-logo {*/
+/*    position: fixed;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    width: 100vw;*/
+/*    height: 100vh;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    background-color: white; !* Optional: add a background color if needed *!*/
+/*    z-index: 1000; !* Ensure it's on top of other content *!*/
+/*}*/
+
+/* Logo fade-out animation */
+.logo-animation {
+    width: 150px; /* Adjust size as needed */
+    height: auto;
+    opacity: 1;
+    animation: fadeOut 2.5s ease-in-out .5s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    70% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}

@@ -69,7 +69,7 @@ const ReviewCard = ({img,name,username,body,}) => {
     );
 };
 
-export function MarqueeDemo() {
+export function MarqueeRatings() {
     return (
         <div className="relative flex w-[95%] mx-auto mb-6 h-fit flex-col items-center justify-center overflow-hidden rounded-lg bg-transparent"
                 data-aos="zoom-y-out" data-aos-delay="600"

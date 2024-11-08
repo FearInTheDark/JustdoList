@@ -22,7 +22,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         User::preventLazyLoading();
-        Inertia::share([
-        ]);
     }
 }

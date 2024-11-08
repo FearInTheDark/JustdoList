@@ -1,4 +1,3 @@
-
 export default function Feedback() {
     return (
         <section>
@@ -21,20 +20,20 @@ export default function Feedback() {
                             </svg>
                             <img
                                 className="rounded-full z-10"
-                                src="./storage/landing-images/feedback-user.jpg"
+                                src="/storage/landing-images/feedback-user.jpg"
                                 width={48}
                                 height={48}
                                 alt="Jennifer"
                             />
                         </div>
-                        <p className="text-2xl font-bold text-gray-900">
+                        <p className="text-2xl font-bold text-gray-900 dark:text-gray-50">
                             “JustdoList has simplified my life in more ways than one. From
                             managing my sites to{" "}
-                            <em className="italic text-gray-500">keeping track of tasks</em>,
+                            <em className="italic text-gray-500 dark:text-gray-400">keeping track of tasks</em>,
                             it's become my go-to tool for everything.”
                         </p>
                         <div className="text-sm font-medium text-gray-500">
-                            <span className="text-gray-700">Mary Sullivan</span>{" "}
+                            <span className="text-gray-700 dark:text-gray-200">Mary Sullivan</span>{" "}
                             <span className="text-gray-400">/</span>{" "}
                             <a className="text-blue-500" href="#">
                                 CTO at Microsoft

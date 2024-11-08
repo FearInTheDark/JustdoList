@@ -22,8 +22,8 @@
         }
     },
     "include": [
-        "resources/js/**/*.ts",
-        "resources/js/**/*.tsx",
-        "resources/js/**/*.d.ts"
+        "resources/js/**/*.js",
+        "resources/js/**/*.jsx",
+        "resources/js/**/*.d.js"
     ]
 }
