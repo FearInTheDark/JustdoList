@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title')->default('Untitled');
             $table->text('description')->nullable();
             $table->enum('frequency', ['once','daily', 'weekly', 'monthly', 'yearly'])->default('once');
+            $table->smallInteger("priority")->default(0);
             $table->dateTime('due_date')->nullable();
             $table->boolean('completed')->default(false);
             $table->timestamps();

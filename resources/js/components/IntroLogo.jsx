@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 const IntroLogo = ({srcIcon}) => {
     const [visible, setVisible] = useState(true);
-    const src = srcIcon ? srcIcon : "/storage/home/intro.svg"
+    srcIcon ??= "/storage/app/intro.svg"
     useEffect(() => {
         const timer = setTimeout(() => {
             setVisible(false);
@@ -21,7 +21,7 @@ const IntroLogo = ({srcIcon}) => {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-white dark:bg-gray-800 z-[100]">
-            <img src={src} alt="Logo" className="logo-animation"/>
+            <img src={srcIcon} alt="Logo" className="logo-animation"/>
         </div>
     );
 };

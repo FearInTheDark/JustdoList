@@ -20,8 +20,6 @@ const Register = () => {
         })
     }, []);
     const [isValid, setIsValid] = useState(false)
-    const {props} = usePage()
-    console.log(props)
 
     const {data, setData, errors, post, processing, wasSuccessful} = useForm({
         email: "",
@@ -64,12 +62,11 @@ const Register = () => {
         <>
             <Toaster/>
             <Credit/>
-            <div className="min-h-screen flex bg-gray-200 dark:bg-gray-900">
-                <Toaster/>
-                <div className="hidden relative w-0 flex-1 items-center justify-center lg:flex">
+            <div className="min-h-screen flex justify-center bg-gray-200 dark:bg-gray-900">
+                <div className="hidden relative w-1/2 items-center justify-center lg:flex">
 
                     <img
-                        className={`relative inset-0 object-cover filter drop-shadow-custom-${errors.email ? 'red' : 'blue'}`}
+                        className={`relative inset-0 max-w-[700px] object-cover filter drop-shadow-custom-blue`}
                         src="/storage/login/login_green.svg"
                         alt="Login background image"
                         // data-aos="fade-left" data-aos-duration="1000"
@@ -77,7 +74,7 @@ const Register = () => {
                 </div>
 
 
-                <div className="flex-1 flex flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+                <div className="flex w-1/2 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
                     <div className="mx-auto w-full max-w-sm lg:w-96 shadow-lg p-6 rounded-lg bg-white dark:bg-gray-800" data-aos="fade-right" data-aos-duration="1000">
                         <div className="flex justify-between items-center mb-8">
                             <Link href={route('index')} className="text-sm font-medium text-primary hover:underline flex items-center dark:text-primary-400">

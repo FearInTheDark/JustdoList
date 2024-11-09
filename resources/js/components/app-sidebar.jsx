@@ -24,15 +24,16 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import {
+    Bot,
     Calendar,
     ChartNoAxesGantt,
     ChevronDown,
-    ChevronsUpDown,
+    ChevronsUpDown, CircleEllipsis, Command, CreditCard, CreditCardIcon, Github,
     Home,
     Inbox,
-    LogOut,
+    LogOut, Mail, MessageCircleMore,
     Search,
-    Settings
+    Settings, UserCog, UserRoundPen, UserRoundPlus, UsersRound
 } from "lucide-react"
 import {RainbowButton} from "@/components/ui/rainbow-button";
 import React from "react";
@@ -172,56 +173,69 @@ export function AppSidebar() {
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                             <DropdownMenuItem>
+                                <UserRoundPen/>
                                 Profile
                                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
+                                <CreditCardIcon/>
                                 Billing
                                 <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
+                                <Settings/>
                                 Settings
                                 <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
+                                <Command/>
                                 Keyboard shortcuts
                                 <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>Team</DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <UsersRound/>
+                                Team
+                            </DropdownMenuItem>
                             <DropdownMenuSub>
                                 <DropdownMenuSubTrigger>
+                                    <UserRoundPlus/>
                                     Invite users
                                 </DropdownMenuSubTrigger>
                                 <DropdownMenuPortal>
                                     <DropdownMenuSubContent>
                                         <DropdownMenuItem>
+                                            <Mail/>
                                             Email
                                         </DropdownMenuItem>
                                         <DropdownMenuItem>
+                                            <MessageCircleMore/>
                                             Message
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem>
+                                            <CircleEllipsis/>
                                             More...
                                         </DropdownMenuItem>
                                     </DropdownMenuSubContent>
                                 </DropdownMenuPortal>
                             </DropdownMenuSub>
                             <DropdownMenuItem>
+                                <UserCog/>
                                 New Team
                                 <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>GitHub</DropdownMenuItem>
-                        <DropdownMenuItem>Support</DropdownMenuItem>
+                        <DropdownMenuItem><Github/>GitHub</DropdownMenuItem>
+                        <DropdownMenuItem><Bot/>Support</DropdownMenuItem>
                         <DropdownMenuItem disabled>API</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
-                            <Link>Log out</Link>
+                            <LogOut/>
+                            <Link href={route('logout')} method="post">Log out</Link>
                             <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
