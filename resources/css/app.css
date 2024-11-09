@@ -48,6 +48,11 @@
         --sidebar-accent-foreground: 240 5.9% 10%;
         --sidebar-border: 220 13% 91%;
         --sidebar-ring: 217.2 91.2% 59.8%;
+
+        --badge-amateur: 219 29% 45%;
+        --badge-beginner: 220 53% 40%;
+        --badge-intermediate: 234 53% 48%;
+        --badge-admin: 300, 100%, 0%;
     }
 
     .dark {

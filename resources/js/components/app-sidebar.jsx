@@ -8,7 +8,8 @@ import {
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
-    SidebarMenuItem, SidebarSeparator
+    SidebarMenuItem,
+    SidebarSeparator
 } from "@/components/ui/sidebar";
 import {
     DropdownMenu,
@@ -18,7 +19,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuPortal,
     DropdownMenuSeparator,
-    DropdownMenuShortcut, DropdownMenuSub,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger
@@ -28,18 +30,31 @@ import {
     Calendar,
     ChartNoAxesGantt,
     ChevronDown,
-    ChevronsUpDown, CircleEllipsis, Command, CreditCard, CreditCardIcon, Github,
+    ChevronsUpDown,
+    CircleEllipsis,
+    Command,
+    CreditCardIcon,
+    Github,
     Home,
     Inbox,
-    LogOut, Mail, MessageCircleMore,
+    LogOut,
+    Mail,
+    MessageCircleMore,
     Search,
-    Settings, UserCog, UserRoundPen, UserRoundPlus, UsersRound
+    Settings,
+    UserCog,
+    UserRoundPen,
+    UserRoundPlus,
+    UsersRound
 } from "lucide-react"
 import {RainbowButton} from "@/components/ui/rainbow-button";
 import React from "react";
 import {Link, usePage} from "@inertiajs/react";
 import {useRoute} from "ziggy-js";
 import {Avatar, AvatarImage} from "@/components/ui/avatar";
+import {Badge} from "@/components/ui/badge";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
+import {BorderBeam} from "@/components/ui/border-beam";
 
 // Menu items.
 const items = [
@@ -96,7 +111,7 @@ export function AppSidebar() {
             collapsible="offcanvas"
             side="left"
             variant="inset"
-            style={{ opacity: 0.8 }}
+            style={{opacity: 0.8}}
         >
             <SidebarHeader>
                 <SidebarMenu>
@@ -105,7 +120,7 @@ export function AppSidebar() {
                             <DropdownMenuTrigger asChild>
                                 <SidebarMenuButton>
                                     Select Workspace
-                                    <ChevronDown className="ml-auto" />
+                                    <ChevronDown className="ml-auto"/>
                                 </SidebarMenuButton>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
@@ -120,9 +135,9 @@ export function AppSidebar() {
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-            <SidebarSeparator />
+            <SidebarSeparator/>
             <SidebarContent>
-                <SidebarGroup />
+                <SidebarGroup/>
                 <SidebarGroupLabel>Application</SidebarGroupLabel>
                 <SidebarGroupContent>
                     <SidebarMenu>
@@ -137,7 +152,7 @@ export function AppSidebar() {
                                         method={item.method || "get"}
                                         as="button"
                                     >
-                                        <item.icon />
+                                        <item.icon/>
                                         <span>{item.title}</span>
                                     </Link>
                                 </SidebarMenuButton>
@@ -146,31 +161,48 @@ export function AppSidebar() {
                         <RainbowButton className="mt-2">Click Me</RainbowButton>
                     </SidebarMenu>
                 </SidebarGroupContent>
-                <SidebarGroup />
+                <SidebarGroup/>
             </SidebarContent>
             <SidebarFooter>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <button className="w-full flex rounded-md p-[.5px] dark:hover:bg-sidebar-accent hover:bg-sidebar-accent transition-all items-center gap-1">
                             <Avatar className="rounded-md flex-grow-0">
-                                <AvatarImage src="/storage/avatars/man1.png" />
+                                <AvatarImage src="/storage/avatars/man1.png"/>
+                                <BorderBeam colorFrom="#000000" colorTo="#ffffff" size="100" borderWidth="1" duration={10}/>
                             </Avatar>
                             <div className="flex flex-col justify-between p-1 items-start w-full">
-                                <span className="text-sm font-inter">
+                                <span className="text-sm font-inter inline-flex items-center gap-1">
+                                    <span className="font-semibold">
                                     {props.user.name}
+                                    </span>
+                                    <Badge variant="admin" className="gap-1">
+                                        <Tooltip>
+                                            <TooltipTrigger><img src="/storage/user/admin1.svg" alt=""/></TooltipTrigger>
+                                            <TooltipContent>Admin</TooltipContent>
+                                        </Tooltip>
+                                        {/*Admin*/}
+                                    </Badge>
+                                    <Badge variant="admin" className="gap-1">
+                                        <Tooltip>
+                                            <TooltipTrigger><img src="/storage/user/dev.svg" alt=""/></TooltipTrigger>
+                                            <TooltipContent>Developer</TooltipContent>
+                                        </Tooltip>
+                                        {/*Admin*/}
+                                    </Badge>
                                 </span>
                                 <span className="text-xs font-inter">
                                     {props.user.email}
                                 </span>
                             </div>
                             <div className="flex items-center h-full justify-center flex-grow-0 pr-[2px]">
-                                <ChevronsUpDown className="w-[20px]" />
+                                <ChevronsUpDown className="w-[20px]"/>
                             </div>
                         </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56" side="right">
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
+                        <DropdownMenuSeparator/>
                         <DropdownMenuGroup>
                             <DropdownMenuItem>
                                 <UserRoundPen/>
@@ -193,7 +225,7 @@ export function AppSidebar() {
                                 <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
-                        <DropdownMenuSeparator />
+                        <DropdownMenuSeparator/>
                         <DropdownMenuGroup>
                             <DropdownMenuItem>
                                 <UsersRound/>
@@ -214,7 +246,7 @@ export function AppSidebar() {
                                             <MessageCircleMore/>
                                             Message
                                         </DropdownMenuItem>
-                                        <DropdownMenuSeparator />
+                                        <DropdownMenuSeparator/>
                                         <DropdownMenuItem>
                                             <CircleEllipsis/>
                                             More...
@@ -228,11 +260,11 @@ export function AppSidebar() {
                                 <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
-                        <DropdownMenuSeparator />
+                        <DropdownMenuSeparator/>
                         <DropdownMenuItem><Github/>GitHub</DropdownMenuItem>
                         <DropdownMenuItem><Bot/>Support</DropdownMenuItem>
                         <DropdownMenuItem disabled>API</DropdownMenuItem>
-                        <DropdownMenuSeparator />
+                        <DropdownMenuSeparator/>
                         <DropdownMenuItem>
                             <LogOut/>
                             <Link href={route('logout')} method="post">Log out</Link>

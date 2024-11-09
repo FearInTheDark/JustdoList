@@ -78,7 +78,7 @@ const Tasks = ({taskss, tasks_count}) => {
     return (
         <>
             <IntroLogo srcIcon={'storage/app/tasks.svg'}/>
-            <div className={`h-full px-8 pb-0 pt-12 bg-gray-100 dark:bg-gradient-to-l dark:from-sidebar dark:to-sidebar`}>
+            <div className={`h-full px-8 pb-0 pt-12 bg-gray-100 dark:bg-gradient-to-l dark:from-sidebar dark:to-sidebar/50`}>
                 <div className="max-w-6xl mx-auto">
                     <div className="flex justify-between items-center mb-6">
                         <div className="flex flex-col">
