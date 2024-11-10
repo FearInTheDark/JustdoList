@@ -13,7 +13,6 @@ export default function LoginPage() {
         email: "",
         password: "",
     })
-    console.log(errors)
     useEffect(() => {
         AOS.init({
             once: true,
@@ -28,7 +27,6 @@ export default function LoginPage() {
             ...data,
             [e.target.name]: e.target.value
         })
-        console.log(data)
     }
 
     const handleSubmit = (event) => {

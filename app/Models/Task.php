@@ -7,28 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model {
-	/** @use HasFactory<\Database\Factories\TaskFactory> */
-	use HasFactory;
+    /** @use HasFactory<\Database\Factories\TaskFactory> */
+    use HasFactory;
 
-	protected $fillable = [
-		'title',
-		'description',
-		'frequency',
-		'due_date',
-		'completed',
-	];
+    protected $guarded = ['id', 'user_id', 'created_at'];
 
     protected $casts = [
-        'completed' => 'boolean'
+        'completed' => 'boolean',
+        'end_date' => 'date:Y-m-d',
     ];
 
-	protected function casts(): array {
-		return [
-			'due_date' => 'datetime',
-		];
-	}
+    protected $hidden = [
+        'user_id', 'created_at', 'updated_at'
+    ];
 
-	public function user(): BelongsTo {
-		return $this->belongsTo(User::class);
-	}
+    public function user(): BelongsTo {
+        return $this->belongsTo(User::class);
+    }
 }

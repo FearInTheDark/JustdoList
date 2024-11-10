@@ -27,8 +27,9 @@ class TaskFactory extends Factory
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(random_int(min: 2, max: 4)),
             'frequency' => $this->faker->randomElement(['once', 'daily', 'weekly', 'monthly', 'yearly']),
-            'priority' => $this->faker->numberBetween(0, 10),
-            'due_date' => $this->faker->dateTimeBetween('now', '+1 year'),
+            'priority' => $this->faker->randomElement(['low', 'medium', 'high', 'extreme']),
+            'time' => $this->faker->time(),
+            'end_date' => $this->faker->dateTimeBetween('now', '+3 year'),
             'completed' => $this->faker->boolean(),
         ];
     }

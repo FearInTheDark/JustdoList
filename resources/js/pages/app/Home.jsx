@@ -5,7 +5,7 @@ import AppLayout from "@/layouts/AppLayout.jsx";
 import {BellIcon, CalendarIcon, FileTextIcon, GlobeIcon, InputIcon} from "@radix-ui/react-icons";
 import {BentoCard, BentoGrid} from "@/components/ui/bento-grid";
 import {usePage} from "@inertiajs/react";
-import IntroLogo from "@/components/IntroLogo";
+import IntroLogo from "@/components/layers/IntroLogo";
 import HomeDock from "@/components/HomeDock";
 
 const features = [

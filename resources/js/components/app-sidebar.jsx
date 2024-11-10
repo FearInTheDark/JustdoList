@@ -185,10 +185,9 @@ export function AppSidebar() {
                                     </Badge>
                                     <Badge variant="admin" className="gap-1">
                                         <Tooltip>
-                                            <TooltipTrigger><img src="/storage/user/dev.svg" alt=""/></TooltipTrigger>
+                                            <TooltipTrigger asChild><img src="/storage/user/dev.svg" alt=""/></TooltipTrigger>
                                             <TooltipContent>Developer</TooltipContent>
                                         </Tooltip>
-                                        {/*Admin*/}
                                     </Badge>
                                 </span>
                                 <span className="text-xs font-inter">

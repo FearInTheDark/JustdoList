@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const IntroLogo = ({srcIcon}) => {
+const IntroLogo = ({srcIcon, opacity}) => {
     const [visible, setVisible] = useState(true);
     srcIcon ??= "/storage/app/intro.svg"
     useEffect(() => {
@@ -20,7 +20,7 @@ const IntroLogo = ({srcIcon}) => {
     if (!visible) return null;
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-white dark:bg-gray-800 z-[100]">
+        <div className={`fixed inset-0 flex items-center justify-center bg-white dark:bg-gray-800 z-[100] ${opacity ? ('opacity-' + opacity) : ''}`}>
             <img src={srcIcon} alt="Logo" className="logo-animation"/>
         </div>
     );

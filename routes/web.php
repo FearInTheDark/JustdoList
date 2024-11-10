@@ -24,9 +24,8 @@ Route::resource('users', UserController::class);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('tasks', TaskController::class)
-        ->only('create', 'store', 'destroy', 'index');
+        ->only('create', 'store', 'destroy', 'index', 'update');
     Route::get('/app', fn() => Inertia::render('app/Home'));
 
 });
 
-Route::get('/sessions', fn() => response()->json(session()));
