@@ -4,10 +4,10 @@ import './bootstrap';
 import { createInertiaApp } from '@inertiajs/react';
 import { createRoot } from 'react-dom/client';
 
-const appName = import.meta.env.VITE_APP_NAME || '- Laravel';
+const appName = import.meta.env.VITE_APP_NAME || '- JustdoList';
 
 createInertiaApp({
-    title: (title) => `${title} ${appName}`,
+    title: (title) => `${title}` || `${appName}`,
     resolve:  (name) => {
         const pages = import.meta.glob("./pages/**/*.jsx", {eager: true});
         return pages[`./pages/${name}.jsx`];

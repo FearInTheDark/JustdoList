@@ -20,8 +20,10 @@ return new class extends Migration
             $table->enum('frequency', ['once','daily', 'weekly', 'monthly', 'yearly'])->default('once');
             $table->enum('priority', ['low', 'medium', 'high', 'extreme'])->default('medium');
             $table->time('time')->nullable();
+            $table->date('begin_date')->nullable();
             $table->date('end_date')->nullable();
             $table->boolean('completed')->default(false);
+            $table->boolean('reminder')->default(false);
             $table->timestamps();
         });
     }

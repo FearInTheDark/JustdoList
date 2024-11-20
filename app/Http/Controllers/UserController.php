@@ -22,7 +22,7 @@ class UserController extends Controller {
         $validate = $request->validate([
             'email' => ['email', 'required']
         ]);
-        if (User::where('email', $validate['email'])->first()) {
+        if (User::query()->where('email', $validate['email'])->first()) {
             return back()->withErrors(['email' => 'Email is already taken']);
         }
         if (!$request['password'])
@@ -31,7 +31,7 @@ class UserController extends Controller {
         $validate = array_merge($validate, $request->validate([
             'password' => ['required', 'min:2', 'confirmed', Password::min(2)->letters()]
         ]));
-        $user = User::create($validate);
+        $user = User::query()->create($validate);
         auth()->login($user);
         return redirect('/')->with(['success' => 'User created']);
     }
@@ -61,9 +61,6 @@ class UserController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user) {
-        $validate = $request->validate([
-
-        ]);
     }
 
     /**

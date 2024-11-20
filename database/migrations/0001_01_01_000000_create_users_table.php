@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->date('birthday')->nullable();
             $table->unsignedInteger('finished_tasks')->default(0);
+            $table->string('image')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

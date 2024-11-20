@@ -2,9 +2,7 @@ import {AnimatedBeamMultipleOutputDemo} from "@/components/AnimatedBeam";
 
 export default function Features() {
     return (
-        <section className="relative before:absolute before:inset-0 before:-z-20 bg-gray-900 rounded-lg "
-                 data-aos="zoom-in"
-        >
+        <section className="relative before:absolute before:inset-0 before:-z-20 bg-gray-900 rounded-lg ">
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
                 <div className="py-12 md:py-20">
                     {/* Section header */}

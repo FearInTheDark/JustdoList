@@ -18,6 +18,7 @@ const badgeVariants = cva(
                 amateur: "border-transparent bg-badge-amateur text-white shadow",
                 beginner: "border-transparent bg-badge-beginner text-white shadow",
                 intermediate: "border-transparent bg-badge-intermediate text-white shadow",
+                master: "border-transparent bg-gray-100 text-white shadow",
                 admin: "border-transparent bg-badge-admin text-white shadow",
                 dev: "border-transparent bg-gradient-to-l from-rose-500 to-rose-600 text-white shadow",
             },

@@ -13,7 +13,6 @@ import Footer from "@/pages/landing/Footer";
 import Illustration from "@/pages/landing/Illustration";
 import {WhiteRainbowButton} from "@/components/ui/WhiteRainbowButton";
 import {MarqueeRatings} from "@/components/MarqueeRatings";
-import {Modal, ModalBody, ModalContent, ModalTrigger} from "@/components/ui/AnimatedModal";
 
 export default function Landing() {
     useEffect(() => {

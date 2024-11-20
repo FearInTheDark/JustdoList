@@ -3,6 +3,7 @@ import {AppSidebar} from "@/components/app-sidebar"
 import Credit from "@/components/Credit";
 import {Toaster} from "sonner";
 import IntroLogo from "@/components/layers/IntroLogo";
+import {Head} from "@inertiajs/react"
 
 export default function AppLayout({children}) {
     return (

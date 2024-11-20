@@ -1,7 +1,7 @@
 import React from "react";
 
 import {Dock, DockIcon} from "@/components/ui/dock";
-import {HomeIcon, MailIcon, PencilIcon, Sun} from "lucide-react";
+import {HomeIcon, MailIcon, PencilIcon} from "lucide-react";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {CalendarIcon} from "@radix-ui/react-icons";
 import {Separator} from "@/components/ui/separator";
@@ -56,7 +56,7 @@ const Icons = {
 const DATA = {
     navbar: [
         {href: "#", icon: HomeIcon, label: "Home"},
-        {href: "#", icon: PencilIcon, label: "Blog"},
+        {href: "/tasks", icon: PencilIcon, label: "Add Task"},
     ],
     contact: {
         social: {
@@ -144,9 +144,7 @@ export default function HomeDock() {
                 <DockIcon>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <>
-                                <ThemeMode className="size-7"/>
-                            </>
+                            <ThemeMode className="size-7"/>
                         </TooltipTrigger>
                         <TooltipContent>
                             <span>Theme</span>

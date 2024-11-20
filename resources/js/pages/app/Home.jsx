@@ -1,12 +1,14 @@
 import "aos/dist/aos.css";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import AOS from "aos";
 import AppLayout from "@/layouts/AppLayout.jsx";
-import {BellIcon, CalendarIcon, FileTextIcon, GlobeIcon, InputIcon} from "@radix-ui/react-icons";
+import {BellIcon, CalendarIcon, FileTextIcon, InputIcon} from "@radix-ui/react-icons";
 import {BentoCard, BentoGrid} from "@/components/ui/bento-grid";
 import {usePage} from "@inertiajs/react";
 import IntroLogo from "@/components/layers/IntroLogo";
 import HomeDock from "@/components/HomeDock";
+import {SquarePen} from "lucide-react";
+import FlickeringGrid from "@/components/ui/flickering-grid";
 
 const features = [
     {
@@ -28,12 +30,12 @@ const features = [
         className: "md:col-start-1 md:col-end-2 md:row-start-1 md:row-end-3",
     },
     {
-        Icon: GlobeIcon,
-        name: "Multilingual",
-        description: "Supports 100+ languages and counting.",
+        Icon: SquarePen,
+        name: "Feedback",
+        description: "Send your feedback to improve our product!",
         href: "/",
         cta: "Learn more",
-        background: <img alt="..." className="absolute -right-20 -top-20 opacity-60"/>,
+        background: <img alt="..." className="absolute -right-20 -top-20 opacity-60" src="/storage/user/admin1.svg"/>,
         className: "md:col-start-1 md:col-end-2 md:row-start-3 md:row-end-4",
     },
     {
@@ -52,7 +54,7 @@ const features = [
             "Get notified when someone shares a file or mentions you in a comment.",
         href: "/",
         cta: "Learn more",
-        background: <img alt="..." className="absolute -right-20 -top-20 opacity-60"/>,
+        background: <img alt="..." className="absolute -right-20 -top-20 opacity-60 z-30"/>,
         className: "md:col-start-3 md:col-end-3 md:row-start-2 md:row-end-4",
     },
 ];
@@ -70,9 +72,16 @@ function Home() {
     console.log(page)
     return (
         <>
-            <IntroLogo/>
-            <div className="w-full flex px-4 mx-auto max-w-5xl mt-10">
-
+            <FlickeringGrid
+                className="z-0 absolute inset-0 size-full opacity-30"
+                squareSize={4}
+                gridGap={6}
+                color="#6B7280"
+                maxOpacity={0.5}
+                flickerChance={0.1}
+            />
+            <IntroLogo srcIcon={'storage/pages/intro.svg'}/>
+            <div className="size-full flex justify-center items-center px-4 pb-[100px] mx-auto max-w-5xl mt-10">
                 <BentoGrid className="lg:grid-rows-3 md:grid-rows-2">
                     {features.map((feature) => (
                         <BentoCard key={feature.name} {...feature}/>

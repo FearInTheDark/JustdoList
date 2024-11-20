@@ -22,10 +22,16 @@ Route::post('/theme', [AppController::class, 'theme'])->name('theme');
 Route::resource('users', UserController::class);
 
 
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('tasks', TaskController::class)
-        ->only('create', 'store', 'destroy', 'index', 'update');
+        ->only('store', 'destroy', 'index', 'update');
     Route::get('/app', fn() => Inertia::render('app/Home'));
+    Route::get('/tasks/{time}', [TaskController::class, 'showTasks'])
+        ->where('time', 'today|week|month|year')
+        ->name('tasks.time');
+    Route::get('/file', [AppController::class, 'file'])->name('file');
+    Route::post('/file', [AppController::class, 'send'])->name('post_file');
 
 });
 

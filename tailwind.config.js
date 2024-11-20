@@ -299,12 +299,19 @@ export default {
     			},
     			'h-lg': {
     				raw: '(min-height: 1024px)'
-    			}
-    		}
+    			},
+                'xxl': {
+                    raw: '(min-width: 1400px)'
+                }
+    		},
+            maxWidth: {
+                'task-dialog': 'min(48rem, 80%)',
+            }
     	}
     },
     plugins: [
         require("tailwindcss-animate"),
         require('daisyui'),
+        require('tailwind-scrollbar-hide')
     ],
 };

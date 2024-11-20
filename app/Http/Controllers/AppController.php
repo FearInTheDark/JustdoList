@@ -25,4 +25,24 @@ class AppController extends Controller {
             'theme' => $theme,
         ]);
     }
+
+    public function file(Request $request) {
+        return Inertia::render('File');
+    }
+
+    public function send(Request $request) {
+        $request->validate([
+            'file' => 'required|file|mimes:jpg,png,pdf|max:2048',
+        ]);
+
+        $newName = strtolower(auth()->user()->name . '-' . auth()->user()->id . '-'
+            . $request->file('file')->getClientOriginalName());
+
+        $path = $request->file('file')->storeAs('uploads', $newName, 'public');
+
+        auth()->user()->image = $newName;
+        auth()->user()->save();
+
+        return response()->json(['file' => $path]);
+    }
 }

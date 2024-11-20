@@ -26,7 +26,6 @@ const Register = () => {
         password: "",
         password_confirmation: ""
     })
-    console.log(data)
     const handleFormChange = (e) => {
         e.preventDefault()
         const key = e.target.name;
@@ -64,7 +63,6 @@ const Register = () => {
             <Credit/>
             <div className="min-h-screen flex justify-center bg-gray-200 dark:bg-gray-900">
                 <div className="hidden relative w-1/2 items-center justify-center lg:flex">
-
                     <img
                         className={`relative inset-0 max-w-[700px] object-cover filter drop-shadow-custom-blue`}
                         src="/storage/login/login_green.svg"
@@ -73,10 +71,9 @@ const Register = () => {
                     />
                 </div>
 
-
-                <div className="flex w-1/2 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-                    <div className="mx-auto w-full max-w-sm lg:w-96 shadow-lg p-6 rounded-lg bg-white dark:bg-gray-800" data-aos="fade-right" data-aos-duration="1000">
-                        <div className="flex justify-between items-center mb-8">
+                <div className="flex lg:w-1/2 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+                    <div className="mx-auto w-full flex flex-col max-w-[450px]  lg:w-full shadow-lg p-6 rounded-lg bg-white dark:bg-gray-800" data-aos="fade-left" data-aos-duration="1000">
+                        <div className="flex justify-between items-center mb-2">
                             <Link href={route('index')} className="text-sm font-medium text-primary hover:underline flex items-center dark:text-primary-400">
                                 <ArrowLeft className="mr-2 h-4 w-4"/>
                                 Back to Home
@@ -86,7 +83,7 @@ const Register = () => {
 
                         <div className="mb-8">
                             <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">Create your account</h2>
-                            <p className="mt-2 text-sm text-muted-foreground dark:text-gray-400">
+                            <p className="mt-2 text-md text-muted-foreground dark:text-gray-400">
                                 Or{' '}
                                 <Link href={route('loginForm')} className="font-medium text-primary hover:underline dark:text-primary-400">
                                     login
@@ -94,7 +91,7 @@ const Register = () => {
                             </p>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-6 flex flex-col justify-between">
                             <div className="space-y-1">
                                 <Label htmlFor="email" className="dark:text-gray-300">Email address</Label>
                                 <div className="relative">
@@ -111,7 +108,7 @@ const Register = () => {
                             </div>
                             {isValid ?
                                 <>
-                                    <div className="space-y-1">
+                                    <div className="space-y-1 animate-fadeIn">
                                         <Label htmlFor="password" className="dark:text-gray-300">Password</Label>
                                         <div className="relative">
                                             <Input id="password" name="password" type="password" autoComplete="current-password" required
@@ -121,10 +118,10 @@ const Register = () => {
                                         </div>
                                     </div>
 
-                                    <div className="space-y-1">
+                                    <div className="space-y-1 animate-fadeIn">
                                         <Label htmlFor="password_confirmation" className="dark:text-gray-300">Confirm password</Label>
                                         <div className="relative">
-                                            <Input id="password" name="password_confirmation" type="password_confirmation" autoComplete="current-password" required
+                                            <Input id="password" name="password_confirmation" type="password" autoComplete="current-password" required
                                                    className="pl-10 dark:bg-gray-700 dark:text-white dark:border-gray-600"
                                                    placeholder="Your password goes here" onChange={handleFormChange}/>
                                             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500"/>
@@ -132,7 +129,7 @@ const Register = () => {
                                     </div>
                                 </> : null}
 
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between transition-all">
                                 <div className="flex items-center">
                                     <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700"/>
                                     <Label htmlFor="remember-me" className="ml-2 block text-sm text-muted-foreground dark:text-gray-400">

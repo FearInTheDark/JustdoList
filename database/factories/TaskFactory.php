@@ -29,7 +29,7 @@ class TaskFactory extends Factory
             'frequency' => $this->faker->randomElement(['once', 'daily', 'weekly', 'monthly', 'yearly']),
             'priority' => $this->faker->randomElement(['low', 'medium', 'high', 'extreme']),
             'time' => $this->faker->time(),
-            'end_date' => $this->faker->dateTimeBetween('now', '+3 year'),
+            'end_date' => $this->faker->dateTimeBetween('-1 month', '+3 year'),
             'completed' => $this->faker->boolean(),
         ];
     }

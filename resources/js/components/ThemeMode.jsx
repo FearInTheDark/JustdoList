@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {cn} from "@/lib/utils";
+import {Inertia} from "@inertiajs/inertia"
 
 export default function ThemeMode({className}) {
     const [theme, setTheme] = useState(!document.body.classList.contains('dark'));
@@ -46,13 +47,6 @@ export default function ThemeMode({className}) {
 }
 
 const postTheme = async (theme) => {
-    const response = await fetch('/theme', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({theme: theme ? 'dark' : 'light'})
-    })
-    const data = await response.json();
+    const res = await axios.post('/theme', {theme: theme ? "dark" : "light"})
+    console.log(res.data)
 }

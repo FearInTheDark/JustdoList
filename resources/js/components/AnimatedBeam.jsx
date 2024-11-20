@@ -8,13 +8,8 @@ import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hov
 
 const Circle = forwardRef(({className, children}, ref) => {
     return (
-        <div
-            ref={ref}
-            className={cn(
-                "z-10 flex size-14 items-center justify-center rounded-full border-2 border-border bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)]",
-                className,
-            )}
-        >
+        <div ref={ref}
+             className={cn("z-10 flex size-14 items-center justify-center rounded-full border-2 border-border bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)]", className,)}>
             {children}
         </div>
     );
@@ -45,20 +40,15 @@ export function AnimatedBeamMultipleOutputDemo({className,}) {
         const timer = setTimeout(() => {
             setShowBeams(true)
         }, 1000)
+        return () => clearTimeout(timer)
     }, [])
 
     return (
-        <div
-            className={cn(
-                "relative flex h-[400px] w-full items-center justify-center overflow-hidden rounded-lg border bg-background p-10 pt-0",
-                className,
-            )}
-            ref={containerRef}
-        >
-            <div className="flex z-10 size-full flex-row items-stretch justify-between gap-10 max-w-lg"
-                 data-aos="zoom-in"
-
-            >
+        <div className={cn(
+            "relative flex h-[400px] w-full items-center justify-center overflow-hidden rounded-lg border bg-background p-10 pt-0",
+            className,)}
+             ref={containerRef}>
+            <div className="flex z-10 size-full flex-row items-stretch justify-between gap-10 max-w-lg">
                 <div className="flex flex-col justify-center gap-2">
                     {fromCircles.map(circle => {
                         const [Icon, ref, key] = circle;
@@ -73,9 +63,6 @@ export function AnimatedBeamMultipleOutputDemo({className,}) {
                                     This is Google Drive
                                 </HoverCardContent>
                             </HoverCard>
-                            // <Circle ref={ref} key={key}>
-                            //     {Icon}
-                            // </Circle>
                         );
                     })}
 
@@ -93,43 +80,43 @@ export function AnimatedBeamMultipleOutputDemo({className,}) {
             </div>
             {showBeams &&
                 (<div className="beams z-0">
-                <AnimatedBeam
-                    containerRef={containerRef}
-                    fromRef={div1Ref}
-                    toRef={div6Ref}
-                />
-                <AnimatedBeam
-                    containerRef={containerRef}
-                    fromRef={div2Ref}
-                    toRef={div6Ref}
-                />
-                <AnimatedBeam
-                    containerRef={containerRef}
-                    fromRef={div3Ref}
-                    toRef={div6Ref}
-                />
-                <AnimatedBeam
-                    containerRef={containerRef}
-                    fromRef={div4Ref}
-                    toRef={div6Ref}
-                />
-                <AnimatedBeam
-                    containerRef={containerRef}
-                    fromRef={div5Ref}
-                    toRef={div6Ref}
-                />
-                <AnimatedBeam
-                    containerRef={containerRef}
-                    fromRef={div6Ref}
-                    toRef={div7Ref}
-                />
-            </div>)}
+                    <AnimatedBeam
+                        containerRef={containerRef}
+                        fromRef={div1Ref}
+                        toRef={div6Ref}
+                    />
+                    <AnimatedBeam
+                        containerRef={containerRef}
+                        fromRef={div2Ref}
+                        toRef={div6Ref}
+                    />
+                    <AnimatedBeam
+                        containerRef={containerRef}
+                        fromRef={div3Ref}
+                        toRef={div6Ref}
+                    />
+                    <AnimatedBeam
+                        containerRef={containerRef}
+                        fromRef={div4Ref}
+                        toRef={div6Ref}
+                    />
+                    <AnimatedBeam
+                        containerRef={containerRef}
+                        fromRef={div5Ref}
+                        toRef={div6Ref}
+                    />
+                    <AnimatedBeam
+                        containerRef={containerRef}
+                        fromRef={div6Ref}
+                        toRef={div7Ref}
+                    />
+                </div>)}
 
         </div>
     );
 }
 
-const Icons = {
+export const Icons = {
     notion: () => (
         <svg
             width="100"
