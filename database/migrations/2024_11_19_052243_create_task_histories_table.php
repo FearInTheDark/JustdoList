@@ -15,7 +15,9 @@ return new class extends Migration
         Schema::create('task_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Task::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string("content")->default("Task created");
+            $table->enum('type', ['created', 'updated', 'deleted', 'restored', 'missed', 'finished'])->default('created');
+            $table->string("title")->default("Task created");
+            $table->string("content")->nullable();
             $table->boolean("status")->default(false);
             $table->timestamps();
         });

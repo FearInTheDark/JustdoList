@@ -2,7 +2,7 @@
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {useEffect} from "react";
-import {Head, Link} from "@inertiajs/react";
+import {Head} from "@inertiajs/react";
 import Header from "@/pages/landing/Header";
 import SparklesText from "@/components/ui/sparkles-text";
 import {RainbowButton} from "@/components/ui/rainbow-button";
@@ -13,6 +13,7 @@ import Footer from "@/pages/landing/Footer";
 import Illustration from "@/pages/landing/Illustration";
 import {WhiteRainbowButton} from "@/components/ui/WhiteRainbowButton";
 import {MarqueeRatings} from "@/components/MarqueeRatings";
+import {useLanguage} from "@/contexts/LanguageContext"
 
 export default function Landing() {
     useEffect(() => {
@@ -23,13 +24,19 @@ export default function Landing() {
             easing: "ease-out-cubic",
         });
     }, []);
+
+    const url = import.meta.url;
+    const fileName = url.substring(url.lastIndexOf("/") + 1).split(".")[0];
+    const landing = useLanguage().translations[fileName.toLowerCase()]
+    const font = useLanguage().translations?.font
+
     return (
         <>
             <Head>
                 <title>JustdoList - Free Task Manager</title>
                 <meta name="Landing Page" content="JustdoList - Free Task Manager"/>
             </Head>
-            <div className="flex min-h-screen flex-col overflow-hidden supports-[overflow-clip]:overflow-clip font-inter bg-gray-200 dark:bg-gray-800">
+            <div className={`${font} flex min-h-screen flex-col overflow-hidden supports-[overflow-clip]:overflow-clip bg-gray-200 dark:bg-gray-800`}>
                 <Header/>
                 <div className="relative">
 
@@ -47,7 +54,9 @@ export default function Landing() {
                                     data-aos-duration={500}
                                 >
                                     <SparklesText
-                                        text={<span>Manage all your tasks and <br className="max-lg:hidden"/>assignments</span>}
+                                        text={
+                                            <span className={`${font}`}>{landing?.title || `Manage all your tasks and ${
+                                                <br className="max-lg:hidden"/>}assignments`}</span>}
                                         colors={{
                                             first: '#FBBF24',
                                             second: '#41D3BD',
@@ -59,7 +68,7 @@ export default function Landing() {
                                     <p className="mb-8 text-lg text-gray-700 dark:text-gray-300"
                                        data-aos="zoom-y-out"
                                        data-aos-delay="300"
-                                    >JustdoList is a great free tool to manage your to-do list. Let's explore its useful features!</p>
+                                    >{landing?.description || `JustdoList is a great free tool to manage your to-do list. Let's explore its useful features!`}</p>
                                     <div
                                         className="relative before:absolute before:inset-0 before:border-y before:[border-image:linear-gradient(to_right,transparent,theme(colors.slate.300/.8),transparent)1] dark:before:border-gray-700 before:z-[-1] before:top-[-1px] before:bottom-[-1px] before:rounded-[inherit]">
                                         <div
@@ -89,7 +98,6 @@ export default function Landing() {
                 <Feedback/>
                 <Footer/>
             </div>
-
         </>
     );
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Event;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -22,8 +23,10 @@ return new class extends Migration
             $table->time('time')->nullable();
             $table->date('begin_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->date('next')->nullable();
             $table->boolean('completed')->default(false);
             $table->boolean('reminder')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

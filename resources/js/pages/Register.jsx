@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import {Link, useForm, usePage} from "@inertiajs/react";
+import {Link, useForm} from "@inertiajs/react";
 import {toast, Toaster} from "sonner";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {BorderBeam} from "@/components/ui/border-beam";
 import Credit from "@/components/Credit";
 import {ArrowLeft, Lock, Mail} from "lucide-react";
 import {Label} from "@/components/ui/label";
+import {cn} from "@/lib/utils"
+import AnimatedGridPattern from "@/components/ui/animated-grid-pattern"
+import {Checkbox} from "@/components/ui/checkbox"
 
 const Register = () => {
     useEffect(() => {
@@ -24,7 +26,8 @@ const Register = () => {
     const {data, setData, errors, post, processing, wasSuccessful} = useForm({
         email: "",
         password: "",
-        password_confirmation: ""
+        password_confirmation: "",
+        remember_me: false
     })
     const handleFormChange = (e) => {
         e.preventDefault()
@@ -39,8 +42,7 @@ const Register = () => {
                 description: "Please try again",
                 action: {
                     label: "Hide",
-                    onClick: () => {
-                    }
+                    onClick: () => null
                 }
             }),
             onSuccess: () => {
@@ -48,8 +50,7 @@ const Register = () => {
                     description: "Please follow the steps",
                     action: {
                         label: "Hide",
-                        onClick: () => {
-                        }
+                        onClick: () => null
                     }
                 })
                 setIsValid(true)
@@ -61,13 +62,23 @@ const Register = () => {
         <>
             <Toaster/>
             <Credit/>
+            <AnimatedGridPattern
+                numSquares={100}
+                maxOpacity={0.3}
+                duration={3}
+                repeatDelay={1}
+                className={cn(
+                    "[mask-image:radial-gradient(circle,white,transparent)]",
+                    "inset-x-0 inset-y-[-30%] skew-y-12 bg-blue-100",
+                )}
+            />
             <div className="min-h-screen flex justify-center bg-gray-200 dark:bg-gray-900">
                 <div className="hidden relative w-1/2 items-center justify-center lg:flex">
                     <img
                         className={`relative inset-0 max-w-[700px] object-cover filter drop-shadow-custom-blue`}
                         src="/storage/login/login_green.svg"
                         alt="Login background image"
-                        // data-aos="fade-left" data-aos-duration="1000"
+                        data-aos="fade-left" data-aos-duration="1000"
                     />
                 </div>
 
@@ -97,7 +108,7 @@ const Register = () => {
                                 <div className="relative">
                                     <div className="relative">
 
-                                        <Input id="email" name="email" type="email" autoComplete="off" required
+                                        <Input id="email" name="email" type="email" autoComplete="off" required disabled={isValid}
                                                className="pl-10 dark:bg-gray-700 dark:text-white dark:border-gray-600"
                                                placeholder="Enter your email here" onChange={handleFormChange}/>
                                         <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500"/>
@@ -121,7 +132,7 @@ const Register = () => {
                                     <div className="space-y-1 animate-fadeIn">
                                         <Label htmlFor="password_confirmation" className="dark:text-gray-300">Confirm password</Label>
                                         <div className="relative">
-                                            <Input id="password" name="password_confirmation" type="password" autoComplete="current-password" required
+                                            <Input id="password_confirmation" name="password_confirmation" type="password" autoComplete="current-password" required
                                                    className="pl-10 dark:bg-gray-700 dark:text-white dark:border-gray-600"
                                                    placeholder="Your password goes here" onChange={handleFormChange}/>
                                             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500"/>
@@ -131,7 +142,7 @@ const Register = () => {
 
                             <div className="flex items-center justify-between transition-all">
                                 <div className="flex items-center">
-                                    <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700"/>
+                                    <input id="remember-me" name="remember-me" type="checkbox" className="checkbox checkbox-info rounded size-5" onChange={(e) => setData({...data, remember_me: e.target.checked})}/>
                                     <Label htmlFor="remember-me" className="ml-2 block text-sm text-muted-foreground dark:text-gray-400">
                                         Remember me
                                     </Label>
@@ -185,7 +196,7 @@ const Register = () => {
                                                 <animate id="svgSpinnersBlocksShuffle3b" fill="freeze" attributeName="y" begin="svgSpinnersBlocksShuffle37.end" dur="0.2s" values="1;13"></animate>
                                             </rect>
                                         </svg>}
-                                    Sign in
+                                    {isValid ? 'Register' : 'Validate Email'}
                                 </Button>
                             </div>
 

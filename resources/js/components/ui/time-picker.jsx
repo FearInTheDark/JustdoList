@@ -29,7 +29,7 @@ const TimePicker = ({state, setState, classname}) => {
         const newDate = new Date()
         newDate.setHours(Math.floor(hours))
         newDate.setMinutes(minutes)
-        setState({...state, time: moment(newDate).format('H:m')})
+        setState({...state, time: moment(newDate).format('HH:mm')})
     }
 
     const handleMouseUp = () => {

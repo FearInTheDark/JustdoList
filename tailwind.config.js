@@ -99,7 +99,8 @@ export default {
     			fadeIn: 'fadeIn 0.5s ease-in-out',
     			fadeOut: 'fadeOut 2s ease-in-out 1s forwards',
     			'spin-slow': 'spin 5s linear infinite',
-    			shine: 'shine var(--duration) infinite linear'
+    			shine: 'shine var(--duration) infinite linear',
+    			grid: 'grid 15s linear infinite'
     		},
     		keyframes: {
     			rainbow: {
@@ -283,6 +284,14 @@ export default {
     				to: {
     					'background-position': '0% 0%'
     				}
+    			},
+    			grid: {
+    				'0%': {
+    					transform: 'translateY(-50%)'
+    				},
+    				'100%': {
+    					transform: 'translateY(0)'
+    				}
     			}
     		},
     		dropShadow: {
@@ -300,13 +309,13 @@ export default {
     			'h-lg': {
     				raw: '(min-height: 1024px)'
     			},
-                'xxl': {
-                    raw: '(min-width: 1400px)'
-                }
+    			xxl: {
+    				raw: '(min-width: 1400px)'
+    			}
     		},
-            maxWidth: {
-                'task-dialog': 'min(48rem, 80%)',
-            }
+    		maxWidth: {
+    			'task-dialog': 'min(48rem, 80%)'
+    		}
     	}
     },
     plugins: [

@@ -9,6 +9,7 @@ import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 import {Link, usePage} from "@inertiajs/react";
 import ThemeMode from "@/components/ThemeMode";
+import LanguageSwitcher from "@/components/app/LanguageSwitcher"
 
 const Icons = {
     calendar: (props) => <CalendarIcon {...props} />,
@@ -70,26 +71,25 @@ const DATA = {
                 url: "#",
                 icon: Icons.linkedin,
             },
-            X: {
-                name: "X",
-                url: "#",
-                icon: Icons.x,
+            YouTube: {
+                name: "YouTube",
+                url: "https://www.youtube.com",
+                icon: Icons.youtube,
             },
             email: {
                 name: "Send Email",
-                url: "#",
+                url: "inbox",
                 icon: Icons.email,
             },
         },
     },
 };
 
-function ModeToggle(props) {
-    return null;
-}
+// function ModeToggle(props) {
+//     return null;
+// }
 
-export default function HomeDock() {
-    const {props} = usePage()
+export default function HomeDock(props) {
     return (
         <div className={cn(
             "fixed bottom-[40px] right-1/2 transform translate-x-1/2 z-[30]",
@@ -147,7 +147,17 @@ export default function HomeDock() {
                             <ThemeMode className="size-7"/>
                         </TooltipTrigger>
                         <TooltipContent>
-                            <span>Theme</span>
+                            Theme
+                        </TooltipContent>
+                    </Tooltip>
+                </DockIcon>
+                <DockIcon>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <LanguageSwitcher/>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            Change Language
                         </TooltipContent>
                     </Tooltip>
                 </DockIcon>

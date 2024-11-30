@@ -10,8 +10,7 @@ use Random\RandomException;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Task>
  */
-class TaskFactory extends Factory
-{
+class TaskFactory extends Factory {
     protected $model = Task::class;
 
     /**
@@ -20,17 +19,17 @@ class TaskFactory extends Factory
      * @return array<string, mixed>
      * @throws RandomException
      */
-    public function definition(): array
-    {
+    public function definition(): array {
         return [
             'user_id' => User::query()->inRandomOrder()->value('id') ?? User::factory(),
-            'title' => $this->faker->sentence(),
-            'description' => $this->faker->paragraph(random_int(min: 2, max: 4)),
+            'title' => $this->faker->sentence(3),
+            'description' => $this->faker->paragraph(2),
             'frequency' => $this->faker->randomElement(['once', 'daily', 'weekly', 'monthly', 'yearly']),
             'priority' => $this->faker->randomElement(['low', 'medium', 'high', 'extreme']),
             'time' => $this->faker->time(),
-            'end_date' => $this->faker->dateTimeBetween('-1 month', '+3 year'),
-            'completed' => $this->faker->boolean(),
+            'begin_date' => $this->faker->dateTimeBetween('-2 week'),
+            'end_date' => $this->faker->dateTimeBetween('now', '+3 week'),
+            'reminder' => $this->faker->boolean(),
         ];
     }
 }

@@ -32,9 +32,10 @@ class HandleInertiaRequests extends Middleware {
      * @return array<string, mixed>
      */
     public function share(Request $request): array {
+        $isAdmin = $request->user() ? $request->user()->hasRole('admin') : false;
         return array_merge(parent::share($request), [
             'user' => fn() => $request->user()
-                ? $request->user()->only('id', 'name', 'email', 'birthday', 'image')
+                ? array_merge($request->user()->only('id', 'name', 'email', 'birthday', 'image'), ['is_admin' => $isAdmin])
                 : null,
             'theme' => fn() => $request->session()->get('theme') ?? 'light',
         ]);

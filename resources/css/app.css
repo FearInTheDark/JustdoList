@@ -4,6 +4,7 @@
 @import "additional-styles/theme.css";
 @import "additional-styles/utility-patterns.css";
 @import "additional-styles/custom-styles.css";
+@import "additional-styles/full-calendar.css";
 
 @import "tailwindcss/utilities";
 

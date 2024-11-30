@@ -7,8 +7,11 @@ import {BentoCard, BentoGrid} from "@/components/ui/bento-grid";
 import {usePage} from "@inertiajs/react";
 import IntroLogo from "@/components/layers/IntroLogo";
 import HomeDock from "@/components/HomeDock";
-import {SquarePen} from "lucide-react";
+import {AlarmClock, SquarePen} from "lucide-react";
 import FlickeringGrid from "@/components/ui/flickering-grid";
+import RetroGrid from "@/components/ui/retro-grid"
+import { Calendar } from "@/components/ui/calendar";
+
 
 const features = [
     {
@@ -17,16 +20,25 @@ const features = [
         description: "We automatically save your files as you type.",
         href: "/",
         cta: "Learn more",
-        background: <img alt="..." className="absolute -right-20 -top-20 opacity-60"/>,
-        className: "md:row-start-1 md:row-end-4 md:col-start-2 md:col-end-3",
+        background: (
+            <img
+                alt="..."
+                className="absolute -right-20 -top-20 opacity-60"
+                src="/storage/user/admin1.svg"
+            />
+        ),
+        className: "md:col-start-3 md:col-end-3 md:row-start-1 md:row-end-2",
     },
     {
         Icon: InputIcon,
-        name: "Full text search",
-        description: "Search through all your files in one place.",
-        href: "/",
+        name: "Task Manager",
+        description:
+            "Manage your tasks with our simple and intuitive interface.",
+        href: "/tasks",
         cta: "Learn more",
-        background: <img alt="..." className="absolute -right-20 -top-20 opacity-60"/>,
+        background: (
+            <img alt="..." className="absolute -right-20 -top-20 opacity-60" />
+        ),
         className: "md:col-start-1 md:col-end-2 md:row-start-1 md:row-end-3",
     },
     {
@@ -35,26 +47,42 @@ const features = [
         description: "Send your feedback to improve our product!",
         href: "/",
         cta: "Learn more",
-        background: <img alt="..." className="absolute -right-20 -top-20 opacity-60" src="/storage/user/admin1.svg"/>,
+        background: (
+            <img
+                alt="..."
+                className="absolute -right-20 -top-20 opacity-60"
+                src="/storage/user/admin1.svg"
+            />
+        ),
         className: "md:col-start-1 md:col-end-2 md:row-start-3 md:row-end-4",
     },
     {
         Icon: CalendarIcon,
         name: "Calendar",
-        description: "Use the calendar to filter your files by date.",
+        description: "Use the calendar to filter your tasks by date.",
         href: "/",
         cta: "Learn more",
-        background: <img alt="..." className="absolute -right-20 -top-20 opacity-60"/>,
-        className: "md:col-start-3 md:col-end-3 md:row-start-1 md:row-end-2",
+        background: (
+            <Calendar
+                mode="single"
+                selected={new Date()}
+                className="origin-top bg-gray-100 dark:bg-gray-800 rounded-md border transition-all duration-300 ease-out [mask-image:linear-gradient(to_top,transparent_0%,#000_100%)] group-hover:scale-105"
+            />
+        ),
+        className: "md:row-start-1 md:row-end-4 md:col-start-2 md:col-end-3",
     },
     {
-        Icon: BellIcon,
+        Icon: AlarmClock,
         name: "Notifications",
-        description:
-            "Get notified when someone shares a file or mentions you in a comment.",
+        description: "Get notified when triggering a Task.",
         href: "/",
         cta: "Learn more",
-        background: <img alt="..." className="absolute -right-20 -top-20 opacity-60 z-30"/>,
+        background: (
+            <img
+                alt="..."
+                className="absolute -right-20 -top-20 opacity-60 z-30"
+            />
+        ),
         className: "md:col-start-3 md:col-end-3 md:row-start-2 md:row-end-4",
     },
 ];
@@ -68,8 +96,6 @@ function Home() {
             easing: "ease-out-cubic",
         });
     }, []);
-    const page = usePage()
-    console.log(page)
     return (
         <>
             <FlickeringGrid
@@ -77,16 +103,21 @@ function Home() {
                 squareSize={4}
                 gridGap={6}
                 color="#6B7280"
-                maxOpacity={0.5}
+                maxOpacity={0.8}
                 flickerChance={0.1}
+
             />
             <IntroLogo srcIcon={'storage/pages/intro.svg'}/>
-            <div className="size-full flex justify-center items-center px-4 pb-[100px] mx-auto max-w-5xl mt-10">
-                <BentoGrid className="lg:grid-rows-3 md:grid-rows-2">
+            <div className="size-full flex flex-col gap-10 justify-center items-center px-4 mx-auto max-w-5xl">
+                <span className="pointer-events-none z-10 whitespace-pre-wrap bg-gradient-to-b from-[#ffd319] via-[#ff2975] to-[#8c1eff] bg-clip-text text-center text-7xl font-bold leading-none tracking-tighter text-transparent">
+                    JustdoList
+                </span>
+                <BentoGrid className="lg:grid-rows-3 md:grid-rows-2 z-10">
                     {features.map((feature) => (
                         <BentoCard key={feature.name} {...feature}/>
                     ))}
                 </BentoGrid>
+                <RetroGrid/>
             </div>
             <HomeDock/>
         </>

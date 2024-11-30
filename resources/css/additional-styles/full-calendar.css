@@ -1,0 +1,46 @@
+.fc .fc-daygrid-body {
+    @apply mx-auto
+}
+
+.fc .fc-col-header {
+    @apply mx-auto
+}
+
+
+.fc .fc-daygrid-day.fc-day-today {
+    @apply bg-blue-100;
+}
+
+.fc .fc-col-header-cell-cushion {
+    @apply font-semibold text-gray-700;
+}
+
+.fc .fc-daygrid-day-number {
+    @apply text-gray-600;
+}
+
+.fc .fc-event-title {
+    @apply font-medium;
+}
+
+.fc td[role="gridcell"] {
+    @apply dark:bg-gray-700
+}
+
+.fc td[role="gridcell"] a {
+    @apply dark:text-gray-50
+}
+
+.fc-event {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.fc-event-title {
+    max-width: 100%;
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

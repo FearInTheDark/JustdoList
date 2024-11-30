@@ -24,7 +24,6 @@ class VerifiedUserController extends Controller {
         }
 
         $request->session()->regenerate();
-        Cache::put('user_', Auth::user(), 3600);
         return redirect('/');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Task;
 use App\Models\TaskHistory;
 use App\Models\User;
+use Carbon\Carbon;
 
 class TaskObserver {
     /**
@@ -15,11 +16,30 @@ class TaskObserver {
             $user = User::find($task->user_id);
             $user->increment('finished_tasks');
         }
+        $task->withoutEvents(function () use ($task) {
+            $task->update([
+                'next' => $task->begin_date,
+                'completed' => false,
+                'end_date' => $task->frequency === 'once' ? $task->begin_date : $task->end_date
+            ]);
+        });
         TaskHistory::create([
             'task_id' => $task->id,
-            'content' => 'Task created',
+	        'type' => 'created',
+	        'title' => 'Task created',
             'status' => true
         ]);
+    }
+
+    public function updating(Task $task): void {
+        if ($task->frequency === 'once') {
+            $task->end_date = $task->begin_date;
+        }
+        if (!Carbon::parse($task->next)->between(Carbon::parse($task->begin_date), Carbon::parse($task->end_date))) {
+            $task->next = $task->begin_date;
+            $task->completed = false;
+        }
+        if ($task->getDirty()) $task->handleDirties();
     }
 
     /**
@@ -34,11 +54,6 @@ class TaskObserver {
                 $user->decrement('finished_tasks');
             }
         }
-        TaskHistory::create([
-            'task_id' => $task->id,
-            'content' => 'Task updated',
-            'status' => $task->completed
-        ]);
     }
 
     /**
@@ -49,6 +64,12 @@ class TaskObserver {
             $user = User::find($task->user_id);
             $user->decrement('finished_tasks');
         }
+		TaskHistory::create([
+			'task_id' => $task->id,
+			'type' => 'deleted',
+			'title' => 'Task deleted',
+			'status' => false
+		]);
     }
 
     /**
@@ -59,6 +80,12 @@ class TaskObserver {
             $user = User::find($task->user_id);
             $user->increment('finished_tasks');
         }
+		TaskHistory::create([
+			'task_id' => $task->id,
+			'type' => 'restored',
+			'title' => 'Task restored',
+			'status' => true
+		]);
     }
 
     /**

@@ -1,6 +1,5 @@
 import React, {useMemo, useState} from 'react';
-import {Inertia} from '@inertiajs/inertia';
-import {priorities} from '@/common/objects'
+import {keywords, priorities, responsive} from '@/common/objects'
 import AppLayout from "@/layouts/AppLayout";
 import {
     Select,
@@ -12,7 +11,7 @@ import {
     SelectValue
 } from "@/components/ui/select";
 import {Button} from "@/components/ui/button";
-import {AlarmClock, ChevronDown, ChevronUp, Clock, Flag, Plus, Recycle, Tag, X} from "lucide-react";
+import {AlarmClock, ChevronDown, ChevronUp, Flag, Plus, Recycle, Tag, X} from "lucide-react";
 import {Checkbox} from "@/components/ui/checkbox";
 import {
     Dialog,
@@ -26,87 +25,42 @@ import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import ThemeMode from "@/components/ThemeMode";
 import IntroLogo from "@/components/layers/IntroLogo";
-import {Head, useForm} from "@inertiajs/react";
+import {useForm} from "@inertiajs/react";
 import {CalendarIcon, ReloadIcon} from "@radix-ui/react-icons";
 import Task from "@/components/app/Task";
 import {useRoute} from "ziggy-js";
 import FlagIcon from "@/common/flag-color";
 import {toast} from "sonner";
 import GridPattern from "@/components/ui/grid-pattern";
-import {cn} from "@/lib/utils";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {Calendar} from "@/components/ui/calendar"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import moment from "moment";
 import {taskInitData} from "@/common/task-init-data";
-import TaskHistory from "@/components/app/TaskHistory"
 import TaskDialog from "@/components/app/TaskDialog"
 import TimePicker from "@/components/ui/time-picker"
+import {format} from "date-fns"
+import Carousel from "react-multi-carousel"
+import "react-multi-carousel/lib/styles.css";
 
-const keywords = {
-    '_today': {
-        frequency: 'once',
-        begin_date: new Date().toISOString().split('T')[0],
-        end_date: new Date().toISOString().split('T')[0],
-    },
-    '_tomorrow': {
-        frequency: 'once',
-        begin_date: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0],
-        end_date: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0],
-    },
-    '_once': {
-        frequency: 'once',
-        begin_date: new Date().toISOString().split('T')[0],
-        end_date: new Date().toISOString().split('T')[0],
-    },
-    '_daily': {
-        frequency: 'daily',
-        end_date: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0],
-    },
-    '_weekly': {
-        frequency: 'weekly',
-        end_date: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString().split('T')[0],
-    },
-    '_monthly': {
-        frequency: 'monthly',
-        end_date: new Date(new Date().setDate(new Date().getDate() + 90)).toISOString().split('T')[0],
-    },
-    '_yearly': {
-        frequency: 'yearly',
-        end_date: new Date(new Date().setDate(new Date().getDate() + 365)).toISOString().split('T')[0],
-    },
-    '_low': {
-        priority: 'low',
-    },
-    '_medium': {
-        priority: 'medium',
-    },
-    '_high': {
-        priority: 'high',
-    },
-    '_extreme': {
-        priority: 'extreme',
-    },
-    '_reminder': {
-        reminder: true,
-    },
-}
-
-const Tasks = ({taskss = null, overdue = null, title, defaultLayout = "grid"}) => {
+const Tasks = ({taskss = null, title, type = null, defaultLayout = "grid"}) => {
     const [tasks, setTasks] = useState(taskss);
     const [layout, setLayout] = useState(defaultLayout);
     const [finished, setFinished] = useState(false);
     const [tasksCount, setTasksCount] = useState(null)
-    const [sortConfig, setSortConfig] = useState(null);
     const [selectedTask, setSelectedTask] = useState(null);
     const [isAddingTask, setIsAddingTask] = useState(false);
+    const [sortConfig, setSortConfig] = useState(null);
 
-    const {data, setData, post, errors, processing} = useForm(taskInitData);
-
+    const {data, setData, errors, processing} = useForm(taskInitData);
     const route = useRoute()
 
+    let overdueTasks = useMemo(() => {
+        return tasks.filter(task => moment(task.next).endOf('day').isBefore(moment()) && !task.completed)
+    }, [tasks])
+
     let sortedTasks = useMemo(() => {
-        const filteredTasks = tasks.filter(task => task.completed === finished);
+        const filteredTasks = tasks.filter(task => finished ? task.completed === true : task.completed === false && moment(task.next).endOf('day').isAfter(moment()));
         if (!finished) setTasksCount(filteredTasks.length)
         return filteredTasks.sort((a, b) => {
             if (!sortConfig) return 0;
@@ -133,6 +87,12 @@ const Tasks = ({taskss = null, overdue = null, title, defaultLayout = "grid"}) =
         setFinished(!finished);
     };
 
+    const handleCalendarSelect = (date) => {
+        if (data.frequency !== "once" && data.frequency !== null)
+            setData({...data, begin_date: format(date.from, "yyyy-MM-dd"), end_date: format(date.to, "yyyy-MM-dd")})
+        else setData({...data, begin_date: format(date, "yyyy-MM-dd"), end_date: format(date, "yyyy-MM-dd")})
+    }
+
     const handleType = (e) => {
         e.preventDefault()
         const lastWord = e.target.value.split(' ').slice(-1)[0]
@@ -144,24 +104,20 @@ const Tasks = ({taskss = null, overdue = null, title, defaultLayout = "grid"}) =
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(data)
-        post(route('tasks.store'), {
-            onSuccess: (params) => {
-                const newTask = params.props.task;
-                console.log("New Task from Props: ", newTask)
-                setTasks((prev) => [...prev, newTask]);
-                toast('Task added successfully', {
-                    description: 'Task has been added successfully',
-                });
-                setData(taskInitData);
-            },
-            onError: (errors) => {
-                console.log(errors);
-                toast('Failed to add task', {
-                    description: 'Failed to add task',
-                });
-            }
-        });
+        try {
+            const res = await axios.post(route('tasks.store'), data)
+            const newTask = res.data.task
+            setTasks((prev) => [...prev, newTask]);
+            toast.success('Task added successfully', {
+                description: 'Task has been added successfully',
+            });
+            setIsAddingTask(false);
+            setData(taskInitData);
+        } catch (error) {
+            toast.error('Failed to add task', {
+                description: (error.response.data.message || 'An error occurred while adding task'),
+            })
+        }
     };
     return (
         <>
@@ -169,7 +125,7 @@ const Tasks = ({taskss = null, overdue = null, title, defaultLayout = "grid"}) =
                 width={20} height={20}
                 x={-1} y={-1}
                 strokeDasharray={"4 2"}
-                className={cn("[mask-image:radial-gradient(900px_circle_at_center,white,transparent)] z-0")}/>
+                className="[mask-image:radial-gradient(900px_circle_at_center,white,transparent)] z-0"/>
             <IntroLogo srcIcon={'/storage/pages/tasks.svg'}/>
             <div className={`h-full px-8 pb-0 pt-12 bg-gray-100 dark:bg-gray-800`}>
                 <div className="max-w-6xl mx-auto">
@@ -177,11 +133,11 @@ const Tasks = ({taskss = null, overdue = null, title, defaultLayout = "grid"}) =
                         <div className="flex flex-col">
 
                             <h1 className="text-3xl font-bold dark:text-white">{title || "Task List"}</h1>
-                            <span>There are {tasksCount} tasks ahead</span>
+                            <span>There {tasksCount === 1 ? 'is' : 'are'} {tasksCount} {`${tasksCount > 1 ? 'tasks' : 'task'}`} ahead</span>
                         </div>
                         <div className="flex items-center space-x-4">
                             <Select value={layout} onValueChange={setLayout}>
-                                <SelectTrigger className="w-[180px]">
+                                <SelectTrigger className="w-[180px] backdrop-blur">
                                     <SelectValue placeholder="Select layout"/>
                                 </SelectTrigger>
                                 <SelectContent>
@@ -204,14 +160,14 @@ const Tasks = ({taskss = null, overdue = null, title, defaultLayout = "grid"}) =
                                     key={key}
                                     onClick={() => handleSort(key)}
                                     variant="outline"
-                                    className="capitalize">
+                                    className="capitalize backdrop-blur">
                                     {key}
                                     {sortConfig?.key === key && (sortConfig.direction === 'asc'
                                         ? <ChevronUp className="ml-2 h-4 w-4"/>
                                         : <ChevronDown className="ml-2 h-4 w-4"/>)}
                                 </Button>
                             ))}
-                            <Button variant="outline" onClick={() => setSortConfig(null)}><X/></Button>
+                            <Button variant="outline" className="backdrop-blur" onClick={() => setSortConfig(null)}><X/></Button>
                         </div>
                         <div className="flex justify-center items-center">
                             <Label className="inline-flex h-9 items-center space-x-2 py-2 px-4 border rounded-md justify-between gap-1 bg-background shadow-sm">
@@ -220,37 +176,46 @@ const Tasks = ({taskss = null, overdue = null, title, defaultLayout = "grid"}) =
                                           checked={finished} defaultChecked={false}/>
                                 <span>Finished</span>
                             </Label>
-                            <Button className="ml-2 sticky top-10 left-10" variant="outline" onClick={() => {
-                                Inertia.reload()
+                            <Button className="ml-2 sticky top-10 left-10" variant="outline" onClick={async () => {
+                                const fetchTasks = await axios.get(route('task-list'))
+                                setTasks(fetchTasks.data.tasks)
                             }}>
                                 <ReloadIcon/>
                             </Button>
                         </div>
                     </div>
-                    <div className={`${layout === 'list' ? 'space-y-4' :
-                        (layout === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4')}`}>
-                        {sortedTasks.length ? sortedTasks.map((task, index) =>
-                            <Task task={task} key={index} tasks_count={tasksCount}
-                                  tasks={tasks} setTasks={setTasks}
-                                  setSelectedTask={setSelectedTask}
-                                  layout={layout}
-                            />
-                        ) : "There is no incoming task"}
-                    </div>
-                    {overdue ?
-                        <>
-                            <div className="uppercase font-semibold text-2xl py-10">overdue tasks:</div>
-                            <div className={`${layout === 'list' ? 'space-y-4' :
-                                (layout === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4')}`}>
+                    {sortedTasks.length ?
+                        (<div className={`${layout === 'list' ? 'space-y-4' : layout === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4'}`}>
+                            {sortedTasks.map((task, index) =>
+                                <Task task={task} key={index} tasks_count={tasksCount}
+                                      tasks={tasks} setTasks={setTasks}
+                                      setSelectedTask={setSelectedTask}
+                                      layout={layout}/>)}
+                        </div>
+                    ) : <Carousel responsive={responsive} infinite autoPlaySpeed={10000}
+                                  containerClass="max-w-task-dialog [max-width:_min(600px,_70%)] overflow-hidden mx-auto"
+                                  autoPlay arrows={false}
+                    >
+                            {Array.from({length: 2}, (_, i) =>
+                                <img src={`/storage/pages/tasks/finish${i + 1}.svg`} alt="Finished Image" key={i} className="drop-shadow-lg"/>)}
+                        </Carousel>
+                    }
 
-                                {overdue.data.map((task, index) =>
-                                    <Task task={task} key={index}
-                                          tasks={tasks} setTasks={setTasks}
-                                          selectedTask={selectedTask} setSelectedTask={setSelectedTask}
-                                          layout={layout}
-                                    />)}
-                            </div>
-                        </> : "There is no Overdue Tasks"
+                    {
+                        overdueTasks.length > 0 &&
+                            <>
+                                <div className="capitalize font-semibold font-inter text-3xl py-10">{type} overdue tasks:</div>
+                                <div className={`${layout === 'list' ? 'space-y-4' :
+                                    (layout === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4' : 'columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4')}`}>
+
+                                    {overdueTasks.map((task, index) =>
+                                        <Task task={task} key={index}
+                                              tasks={tasks} setTasks={setTasks}
+                                              selectedTask={selectedTask} setSelectedTask={setSelectedTask}
+                                              layout={layout}
+                                        />)}
+                                </div>
+                            </>
                     }
                 </div>
                 <TaskDialog selectedTask={selectedTask} setSelectedTask={setSelectedTask} setTasks={setTasks}/>
@@ -262,27 +227,26 @@ const Tasks = ({taskss = null, overdue = null, title, defaultLayout = "grid"}) =
                         </DialogHeader>
                         <form className="flex flex-col font-ui" onSubmit={handleSubmit}>
                             <Input className={`border-none shadow-none border-b-black font-semibold text-2xl focus-visible:border-b focus-visible:border-black focus-visible:ring-0 placeholder:text-gray-500`}
-                                   placeholder={errors.title ? "Title is not valid" : "Task name"} onChange={handleType}/>
+                                   placeholder={errors.title ? "Title is not valid" : "Task name"} value={data.title} onChange={handleType}/>
                             {errors.title &&
                                 <span className="text-rose-300 italic text-sm ml-3 font-thin">Title is not valid</span>}
                             <Input className="border-none shadow-none text-sm focus-visible:ring-0 placeholder:text-gray-500"
                                    placeholder="Task description" onChange={e => setData({
-                                ...data,
-                                description: e.target.value
+                                ...data, description: e.target.value
                             })}/>
                             <div className="flex justify-start gap-2 items-center p-1">
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <Button variant="outline" className="flex p-0.5 px-3 font-normal hover:scale-[1.03] dark:bg-gray-800 hover:border-green-500 active:scale-95 transition-all duration-100 ease-in">
+                                        <Button variant="outline" className={`flex p-0.5 px-3 font-normal hover:scale-[1.03] dark:bg-gray-800 hover:border-green-500 active:scale-95 ${(errors.begin_date || errors.end_date) && 'border-red-400 bg-red-50'} transition-all duration-100 ease-in`}>
                                             <CalendarIcon/>
-                                            {data.frequency === 'once' ? data.begin_date : (<span>{data.begin_date + ' to ' + data.end_date}</span>) || "Today"}
+                                            {data.frequency === 'once' || data.frequency === null || data.frequency === '' ? format(data.begin_date, "PP") : (
+                                                <span>{format(data.begin_date, "PP") + ' to ' + format(data.end_date, "PP")}</span>) || "Today"}
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent align="start" className="flex items-center w-auto space-y-2 p-2 gap-2">
                                         <div className="flex flex-col space-y-2">
                                             <Select onValueChange={(value) => setData({
-                                                ...data,
-                                                begin_date: moment().add(value, 'days').format('YYYY-MM-DD')
+                                                ...data, begin_date: moment().add(value, 'days').format('YYYY-MM-DD')
                                             })}>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Choose Date..."/>
@@ -294,16 +258,18 @@ const Tasks = ({taskss = null, overdue = null, title, defaultLayout = "grid"}) =
                                                     <SelectItem value="7">In 7 days</SelectItem>
                                                 </SelectContent>
                                             </Select>
-                                            <Calendar mode={data.frequency !== 'once' ? 'range' : 'single'}
-                                                      selected={new Date(data.begin_date)}
-                                                      numberOfMonths={data.frequency === 'once' ? 1 : 2}
-                                                      defaultMonth={new Date(data.begin_date)}
-                                                      onDayClick={(day) => setData({
-                                                          ...data,
-                                                          begin_date: moment(day).format('YYYY-MM-DD')
-                                                      })}
-                                                      className="border rounded-md"
+                                            <Calendar
+                                                initialFocus
+                                                mode={data.frequency === 'once' || data.frequency === null ? 'single' : 'range'}
+                                                selected={(data.frequency === 'once' || data.frequency === null) ? new Date(data.begin_date) : {
+                                                    from: data.begin_date, to: data.end_date
+                                                }}
+                                                onSelect={handleCalendarSelect}
+                                                defaultMonth={new Date(data.begin_date)}
+                                                numberOfMonths={data.frequency === 'once' || data.frequency === null ? 1 : 2}
+                                                className="border rounded-md"
                                             />
+
                                         </div>
                                         <TimePicker state={data} setState={setData} classname="shadow-none"/>
                                     </PopoverContent>

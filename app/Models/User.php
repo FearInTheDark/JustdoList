@@ -2,16 +2,21 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Notifications\OTPEmail;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Random\RandomException;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
-{
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+class User extends Authenticatable implements MustVerifyEmail {
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +29,8 @@ class User extends Authenticatable
         'password',
         'birthday',
         'finished_tasks',
-        'image'
+        'image',
+        'is_admin',
     ];
 
     /**
@@ -37,20 +43,59 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function tasks(): HasMany {
+        return $this->hasMany(Task::class);
+    }
+
+    public function authoredEvents(): HasMany {
+        return $this->hasMany(Event::class, 'author_id');
+    }
+
+    public function events(): BelongsToMany {
+        return $this->belongsToMany(Event::class, 'events_users')->withTimestamps();
+    }
+
+    public function sendOTPVerificationEmail(): void {
+        try {
+            $otp = $this->generateOtp()->otp;
+            $this->notify(new OTPEmail($otp));
+        } catch (RandomException $e) {
+
+        }
+    }
+
+    /**
+     * @throws RandomException
+     */
+    public function generateOtp() {
+        $existingOtp = $this->otp()->first();
+        if ($existingOtp && $existingOtp->expires_at > now()) return $existingOtp;
+
+        $this->otp()->updateOrCreate(
+            ['user_id' => $this->id],
+            [
+                'otp' => random_int(10000000, 99999999),
+                'expires_at' => now()->addMinutes(10),
+            ]
+        );
+
+        return $this->otp()->first();
+    }
+
+
+    public function otp(): HasOne {
+        return $this->hasOne(Otp::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
+    protected function casts(): array {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function tasks(): HasMany {
-        return $this->hasMany(Task::class);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -38,6 +39,14 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        Schema::create('otp', function (Blueprint $table) {
+            $table->foreignIdFor(User::class)->primary()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->string('otp')->index();
+            $table->timestamp('expires_at')->nullable();
+            $table->timestamps();
+        });
+
     }
 
     /**
@@ -45,6 +54,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('otp');
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');

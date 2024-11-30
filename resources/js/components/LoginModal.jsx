@@ -13,6 +13,7 @@ import {Button} from "@/components/ui/button";
 import {BorderBeam} from "@/components/ui/border-beam";
 import {Link, useForm} from "@inertiajs/react";
 import {toast} from "sonner";
+import {useLanguage} from "@/contexts/LanguageContext"
 
 const LoginModal = () => {
     const {data, setData, post, processing, wasSuccessful, errors} = useForm({

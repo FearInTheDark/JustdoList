@@ -15,5 +15,8 @@ export default defineConfig({
         alias: {
             '@': '/resources/js',
         },
+    },
+    optimizeDeps: {
+        exclude: ['react-laravel-pagination']
     }
 });

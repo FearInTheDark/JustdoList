@@ -7,6 +7,8 @@ import {Link, useForm} from "@inertiajs/react";
 import {toast, Toaster} from "sonner";
 import AOS from "aos";
 import Credit from "@/components/Credit";
+import RetroGrid from "@/components/ui/retro-grid"
+import {Checkbox} from "@/components/ui/checkbox"
 
 export default function LoginPage() {
     const {data, setData, errors, post, wasSuccessful, processing} = useForm({
@@ -57,7 +59,8 @@ export default function LoginPage() {
     return (
         <>
             <Toaster/>
-            <div className="min-h-screen flex bg-gray-200 dark:bg-gray-900">
+            <RetroGrid angle={45} className="opacity-100 bg-blue-100"/>
+            <div className="min-h-screen flex bg-gray-200 dark:bg-gray-900 overscroll-auto">
                 {/* Left column: Login form and navigation */}
                 <div className=" flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
                     <div className="mx-auto w-full max-w-sm lg:w-96 shadow-lg p-6 rounded-lg bg-white dark:bg-gray-800" data-aos="fade-right" data-aos-duration="1000">
@@ -83,7 +86,7 @@ export default function LoginPage() {
                             <div className="space-y-1">
                                 <Label htmlFor="email" className="dark:text-gray-300">Email address</Label>
                                 <div className="relative">
-                                    <Input id="email" name="email" type="email" autoComplete="off" required className="pl-10 dark:bg-gray-700 dark:text-white dark:border-gray-600" placeholder="Enter your email here" onChange={handleFormChange}/>
+                                    <Input id="email" name="email" type="email" tabIndex={1} autoFocus autoComplete="off" required className="pl-10 dark:bg-gray-700 dark:text-white dark:border-gray-600" placeholder="Enter your email here" onChange={handleFormChange}/>
                                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500"/>
                                 </div>
                                 {errors.email ?
@@ -93,14 +96,14 @@ export default function LoginPage() {
                             <div className="space-y-1">
                                 <Label htmlFor="password" className="dark:text-gray-300">Password</Label>
                                 <div className="relative">
-                                    <Input id="password" name="password" type="password" autoComplete="current-password" required className="pl-10 dark:bg-gray-700 dark:text-white dark:border-gray-600" placeholder="Your password goes here" onChange={handleFormChange}/>
+                                    <Input id="password" name="password" type="password" tabIndex={2} autoComplete="current-password" required className="pl-10 dark:bg-gray-700 dark:text-white dark:border-gray-600" placeholder="Your password goes here" onChange={handleFormChange}/>
                                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500"/>
                                 </div>
                             </div>
 
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center">
-                                    <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded dark:border-gray-600 dark:bg-gray-700"/>
+                                    <input id="remember-me" name="remember-me" type="checkbox" className="checkbox checkbox-info rounded size-5 border-[.5px]"/>
                                     <Label htmlFor="remember-me" className="ml-2 block text-sm text-muted-foreground dark:text-gray-400">
                                         Remember me
                                     </Label>
@@ -144,7 +147,7 @@ export default function LoginPage() {
                 {/* Right column: img */}
                 <div className="hidden relative w-0 flex-1 items-center justify-center lg:flex">
                     <img
-                        className={`relative max-w-[700px] inset-0 object-cover filter drop-shadow-custom-${errors.email ? 'red' : 'blue'} max-w-4xl`}
+                        className={`relative max-w-[700px] inset-0 object-cover filter drop-shadow-custom-blue`}
                         src="/storage/login/loginpage.svg"
                         alt="Login background image"
                         // data-aos="fade-left" data-aos-duration="1000"

@@ -1,6 +1,5 @@
 import {useState} from "react";
 import {cn} from "@/lib/utils";
-import {Inertia} from "@inertiajs/inertia"
 
 export default function ThemeMode({className}) {
     const [theme, setTheme] = useState(!document.body.classList.contains('dark'));
@@ -14,7 +13,7 @@ export default function ThemeMode({className}) {
 
     return (
         <>
-            <label className={`swap swap-rotate ${!theme ? 'text-gray-500' : ''}`}>
+            <label className={`swap swap-rotate ${!theme ? 'text-gray-300' : ''}`}>
                 {/* this hidden checkbox controls the state */}
                 <input
                     type="checkbox"

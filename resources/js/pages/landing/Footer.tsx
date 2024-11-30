@@ -3,8 +3,8 @@ import {Link} from "@inertiajs/react";
 
 export default function Footer({ border = false }: { border?: boolean }) {
   return (
-    <footer>
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 backdrop-blur" data-aos="fade-up">
+    <footer className="w-full backdrop-blur">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6" data-aos="fade-up">
         {/* Top area: Blocks */}
         <div
           className={`grid gap-10 py-8 sm:grid-cols-12 md:py-12 ${border ? "border-t [border-image:linear-gradient(to_right,transparent,theme(colors.slate.200),transparent)1]" : ""}`}
