@@ -24,7 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
-            'redirect.id.verified' => RedirectIfVerified::class
+            'redirect.if.verified' => RedirectIfVerified::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

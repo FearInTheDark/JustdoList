@@ -58,20 +58,16 @@ const File = () => {
         formData.append('file', file);
 
         try {
-            const res = await axios.post(route('post_file'), formData)
+            await axios.post(route('post_file'), formData)
             location.reload()
         } catch (e) {
             console.log(e);
         }
     }
 
-    const handleLanguage = async () => {
-        try {
-            const res = await axios.get('/language/landing')
-            console.log(res)
-        } catch (e) {
-            console.log(e)
-        }
+    const handleBtn = async () => {
+        const res = await axios.get(route('summarize-last-week'))
+        console.log(res.data)
     }
 
     return (
@@ -138,7 +134,7 @@ const File = () => {
                 ))}
             </div>
             <div className="flex items-center justify-center">
-                <Button onClick={handleLanguage}>Click me</Button>
+                <Button onClick={handleBtn}>Click me</Button>
             </div>
         </div>
     )

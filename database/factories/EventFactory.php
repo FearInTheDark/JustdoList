@@ -21,7 +21,7 @@ class EventFactory extends Factory {
             'description' => $this->faker->paragraph,
             'images' => json_encode(
                 array_map(
-                    fn() => $this->faker->imageUrl(),
+                    fn() => "event".rand(1, 15).".jpg",
                     range(1, rand(1, 5))
                 )
             ),

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
@@ -11,7 +12,7 @@ class UserController extends Controller {
      * Display a listing of the resource.
      */
     public function index() {
-        //
+        return redirect('/');
     }
 
     /**
@@ -66,8 +67,12 @@ class UserController extends Controller {
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user) {
+    public function destroy(DeleteUserRequest $request, User $user) {
+        if ($user->id !== $request->user()->id) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $user->delete();
-        return redirect('/')->with(['success' => 'User deleted']);
+        return response()->json(['message' => 'User deleted']);
     }
 }

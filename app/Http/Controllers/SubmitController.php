@@ -32,7 +32,10 @@ class SubmitController extends Controller {
     }
 
     public function unsubmit(Task $task) {
-        if ($task->frequency === 'once') return response()->json(['task' => $task->load(['histories'])]);
+        if ($task->frequency === 'once') {
+            $task->update(['completed' => false]);
+            return response()->json(['task' => $task->load(['histories'])]);
+        }
 
         $nextDay = Carbon::parse($task->next);
         $begin_date = Carbon::parse($task->begin_date);
@@ -48,6 +51,7 @@ class SubmitController extends Controller {
 
         $task->update([
             'next' => $nextDay->format('Y-m-d'),
+            'completed' => false,
         ]);
         return response()->json(['task' => $task->load(['histories'])]);
     }

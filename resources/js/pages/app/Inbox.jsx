@@ -4,6 +4,7 @@ import { Search } from 'lucide-react'
 import { Input } from "@/components/ui/input"
 import { MailList } from "../mail-list"
 import AppLayout from "@/layouts/AppLayout"
+import IntroLogo from "@/components/layers/IntroLogo"
 
 const MAILS = [
     {
@@ -46,6 +47,8 @@ const MAILS = [
 
 const Inbox = () => {
     return (
+        <>
+            <IntroLogo srcIcon="/storage/pages/email.svg"/>
         <div className="flex h-screen pt-10 bg-white overflow-hidden">
             <main className="flex-1">
                 <div className="flex flex-col">
@@ -60,6 +63,7 @@ const Inbox = () => {
             </main>
         </div>
 
+        </>
     )
 }
 

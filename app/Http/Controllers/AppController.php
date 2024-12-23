@@ -39,6 +39,15 @@ class AppController extends Controller {
         ]);
     }
 
+    public function requestFeedback(Request $request) {
+        $feedback = $request->user()->feedbacks()->where('created_at', '>=', Carbon::now()->startOfDay())->first();
+        if ($feedback) {
+            return response()->json(['message' => 'Feedback already requested'], 201);
+        }
+        return response()->json(['message' => "User can provide feedback"]);
+    }
+
+
     public function send(Request $request) {
         $request->validate([
             'file' => 'required|file|mimes:jpg,png,pdf|max:2048',
@@ -47,7 +56,7 @@ class AppController extends Controller {
         $newName = strtolower(auth()->user()->name . '-' . auth()->user()->id . '-'
             . $request->file('file')->getClientOriginalName());
 
-        $path = $request->file('file')->storeAs('avatars', $newName, 'public');
+        $path = $request->file('file')->storeAs('app/avatars', $newName, 'public');
 
         auth()->user()->image = $newName;
         auth()->user()->save();

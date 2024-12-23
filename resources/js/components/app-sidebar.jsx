@@ -18,12 +18,8 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuPortal,
     DropdownMenuSeparator,
     DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import {
@@ -32,27 +28,25 @@ import {
     ChartNoAxesGantt,
     ChevronDown,
     ChevronsUpDown,
-    CircleEllipsis,
     Command,
-    CreditCardIcon,
+    Earth,
     FileBox,
-    Github, HelpCircle,
-    Home, HomeIcon,
+    Github,
+    Home,
+    HomeIcon,
     Inbox,
     LogOut,
-    Mail,
-    MessageCircleMore, MessageSquareText,
+    LucideDock,
+    MessageSquareText,
     PanelsTopLeft,
     Search,
     Settings,
     Shield,
     User,
-    UserCog,
     UserRoundPen,
-    UserRoundPlus,
-    UsersRound
+    UsersIcon
 } from "lucide-react"
-import React, {useState} from "react";
+import React, {lazy, Suspense, useState} from "react";
 import {Link, usePage} from "@inertiajs/react";
 import {useRoute} from "ziggy-js";
 import {Avatar, AvatarImage} from "@/components/ui/avatar";
@@ -61,7 +55,7 @@ import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {BorderBeam} from "@/components/ui/border-beam";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible";
 import DateCalendar from "@/components/sidebar/date-calendar";
-import Dashboard from "@/pages/admin/dashboard"
+import {Skeleton} from "@/components/ui/skeleton"
 
 // Menu items.
 const items = [
@@ -158,222 +152,227 @@ const adminItems = [
         route: 'dashboard',
         icon: HomeIcon,
     },
+    {
+        title: "Users",
+        url: "/admin/users",
+        route: 'admin.users',
+        icon: UsersIcon,
+    },
+    {
+        title: "Tasks",
+        url: "/admin/tasks",
+        route: 'tasks',
+        icon: LucideDock,
+    },
+    {
+        title: "Events",
+        url: "/admin/events",
+        route: 'events',
+        icon: Earth
+    },
+    {
+        title: "Feedbacks",
+        url: "/admin/feedbacks",
+        route: 'feedbacks',
+        icon: MessageSquareText,
+    }
 
 ]
 
 export function AppSidebar() {
     const [menu, setMenu] = useState(items)
+    const [profile, setProfile] = useState(false)
+    const [setting, setSetting] = useState(false)
+    const [feedback, setFeedback] = useState(false)
     const {user} = usePage().props
     const route = useRoute()
-    const avatarURL = user.image ? "/storage/avatars/" + user.image :
+
+    const LazyProfileDialog = lazy(() => import('@/components/app/profile'))
+    const LazySettingDialog = lazy(() => import('@/pages/app/setting'))
+    const LazyFeedback = lazy(() => import("@/components/app/feedback"))
+
+
+    const avatarURL = user.image ? "/storage/app/avatars/" + user.image :
         "https://ui-avatars.com/api/?name=" + user.name + "&background=random&color=fff"
     return (
-        <Sidebar
-            className="SideBar"
-            collapsible="offcanvas"
-            side="left"
-            variant="inset"
-            style={{opacity: 0.8}}
-        >
+            <Sidebar
+                className="SideBar"
+                collapsible="offcanvas"
+                side="left"
+                variant="inset"
+                style={{opacity: 0.8}}
+            >
 
-            <SidebarHeader>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton className="shadow">
-                                    Select Workspace
-                                    <ChevronDown className="ml-auto"/>
-                                </SidebarMenuButton>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-                                <DropdownMenuItem onClick={() => setMenu(items)}>
-                                    <User/>
-                                    <span>User Workspace</span>
-                                </DropdownMenuItem>
-                                {user.is_admin &&
-                                    <DropdownMenuItem onClick={() => setMenu(adminItems)}>
-                                        <Shield/>
-                                        <span>Admin Workspace</span>
-                                    </DropdownMenuItem>}
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarHeader>
-            <SidebarSeparator/>
-            <SidebarContent>
-                <SidebarGroup/>
-                <SidebarGroupLabel>Application</SidebarGroupLabel>
-                <SidebarGroupContent>
+                <SidebarHeader>
                     <SidebarMenu>
-                        {menu.map((item, index) => {
-                            return item.subs ?
-                                <Collapsible defaultOpen={false} className="group/collapsible" key={index}>
-                                    <SidebarMenuItem key={item.title}>
-                                        <CollapsibleTrigger asChild>
-                                            <SidebarMenuButton>
-                                                <item.icon/>
-                                                {item.title}
-                                                <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180"/>
-                                            </SidebarMenuButton>
-                                        </CollapsibleTrigger>
-                                        <CollapsibleContent>
-                                            <SidebarMenuSub>
-                                                {item.subs.map(sub => (
-                                                    <SidebarMenuItem key={sub.title}>
-                                                        <SidebarMenuButton asChild isActive={route().current(sub.route)}>
-                                                            <Link href={sub.url} method={sub.method || "get"} as="button">
-                                                                <sub.icon/>
-                                                                <span>{sub.title}</span>
-                                                            </Link>
-                                                        </SidebarMenuButton>
-                                                    </SidebarMenuItem>
-                                                ))}
-                                            </SidebarMenuSub>
-                                        </CollapsibleContent>
-                                    </SidebarMenuItem>
-                                </Collapsible>
-                                : <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton
-                                        asChild
-                                        isActive={route().current(item.route)}>
-                                        <Link
-                                            href={item.url}
-                                            method={item.method || "get"}
-                                            as="button">
-                                            <item.icon/>
-                                            <span>{item.title}</span>
-                                        </Link>
+                        <SidebarMenuItem>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <SidebarMenuButton className="shadow">
+                                        Select Workspace
+                                        <ChevronDown className="ml-auto"/>
                                     </SidebarMenuButton>
-                                </SidebarMenuItem>
-                        })}
-                        {/*<RainbowButton className="mt-2">Click Me</RainbowButton>*/}
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
+                                    <DropdownMenuItem onClick={() => setMenu(items)}>
+                                        <User/>
+                                        <span>User Workspace</span>
+                                    </DropdownMenuItem>
+                                    {user.is_admin &&
+                                        <DropdownMenuItem onClick={() => setMenu(adminItems)}>
+                                            <Shield/>
+                                            <span>Admin Workspace</span>
+                                        </DropdownMenuItem>}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </SidebarMenuItem>
                     </SidebarMenu>
-                </SidebarGroupContent>
-            </SidebarContent>
-            <SidebarFooter>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <button className="w-full flex rounded-md p-[.5px] dark:hover:bg-sidebar-accent hover:bg-sidebar-accent transition-all items-center gap-1">
-                            <Avatar className="rounded-md flex-grow-0 ml-0.5">
-                                <AvatarImage src={avatarURL} className="object-cover"/>
-                                <BorderBeam colorFrom="#000000" colorTo="#ffffff" size="100" borderWidth="1" duration={10}/>
-                            </Avatar>
-                            <div className="flex flex-col justify-between p-1 items-start w-full overflow-hidden">
-                                <div className="text-sm font-inter inline-flex items-center gap-0.5 overflow-hidden">
-                                    <span className="font-semibold text-ellipsis">{user.name}</span>
-                                    <div className="badges flex overflow-hidden">
+                </SidebarHeader>
+                <SidebarSeparator/>
+                <SidebarContent>
+                    <SidebarGroup/>
+                    <SidebarGroupLabel>Application</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {menu.map((item, index) => {
+                                return item.subs ?
+                                    <Collapsible defaultOpen={false} className="group/collapsible" key={index}>
+                                        <SidebarMenuItem key={item.title}>
+                                            <CollapsibleTrigger asChild>
+                                                <SidebarMenuButton>
+                                                    <item.icon/>
+                                                    {item.title}
+                                                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180"/>
+                                                </SidebarMenuButton>
+                                            </CollapsibleTrigger>
+                                            <CollapsibleContent>
+                                                <SidebarMenuSub>
+                                                    {item.subs.map(sub => (
+                                                        <SidebarMenuItem key={sub.title}>
+                                                            <SidebarMenuButton asChild isActive={route().current(sub.route)}>
+                                                                <Link href={sub.url} method={sub.method || "get"} as="button">
+                                                                    <sub.icon/>
+                                                                    <span>{sub.title}</span>
+                                                                </Link>
+                                                            </SidebarMenuButton>
+                                                        </SidebarMenuItem>
+                                                    ))}
+                                                </SidebarMenuSub>
+                                            </CollapsibleContent>
+                                        </SidebarMenuItem>
+                                    </Collapsible>
+                                    : <SidebarMenuItem key={item.title}>
+                                        <SidebarMenuButton
+                                            asChild
+                                            isActive={route().current(item.route)}>
+                                            <Link
+                                                href={item.url}
+                                                method={item.method || "get"}
+                                                as="button">
+                                                <item.icon/>
+                                                <span>{item.title}</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                            })}
+                            {/*<RainbowButton className="mt-2">Click Me</RainbowButton>*/}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarContent>
+                <SidebarFooter>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <button className="w-full flex rounded-md p-[.5px] dark:hover:bg-sidebar-accent hover:bg-sidebar-accent transition-all items-center gap-1">
+                                <Avatar className="rounded-md flex-grow-0 ml-0.5">
+                                    <AvatarImage src={avatarURL} className="object-cover"/>
+                                    <BorderBeam colorFrom="#000000" colorTo="#ffffff" size="100" borderWidth="1" duration={10}/>
+                                </Avatar>
+                                <div className="flex flex-col justify-between p-1 items-start w-full overflow-hidden">
+                                    <div className="text-sm font-inter inline-flex items-center gap-0.5 overflow-hidden">
+                                        <span className="font-semibold text-ellipsis">{user.name}</span>
+                                        <div className="badges flex overflow-hidden">
 
-                                        <Badge variant="admin" className="gap-1 flex-shrink-0">
-                                            <Tooltip>
-                                                <TooltipTrigger asChild><img src="/storage/user/admin1.svg" alt=""/></TooltipTrigger>
-                                                <TooltipContent>Admin</TooltipContent>
-                                            </Tooltip>
-                                            {/*Admin*/}
-                                        </Badge>
-                                        <Badge variant="admin" className="gap-1 flex-shrink-0">
-                                            <Tooltip>
-                                                <TooltipTrigger asChild><img src="/storage/user/dev.svg" alt=""/></TooltipTrigger>
-                                                <TooltipContent>Developer</TooltipContent>
-                                            </Tooltip>
-                                        </Badge>
-                                        <Badge variant="master" className="gap-1 flex-shrink-0">
-                                            <Tooltip>
-                                                <TooltipTrigger asChild><img src="/storage/user/master.svg" alt="" className="text-yellow-400"/></TooltipTrigger>
-                                                <TooltipContent>Master</TooltipContent>
-                                            </Tooltip>
-                                        </Badge>
+                                            <Badge variant="admin" className="gap-1 flex-shrink-0">
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild><img src="/storage/user/admin1.svg" alt=""/></TooltipTrigger>
+                                                    <TooltipContent>Admin</TooltipContent>
+                                                </Tooltip>
+                                                {/*Admin*/}
+                                            </Badge>
+                                            <Badge variant="admin" className="gap-1 flex-shrink-0">
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild><img src="/storage/user/dev.svg" alt=""/></TooltipTrigger>
+                                                    <TooltipContent>Developer</TooltipContent>
+                                                </Tooltip>
+                                            </Badge>
+                                            <Badge variant="master" className="gap-1 flex-shrink-0">
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild><img src="/storage/user/master.svg" alt="" className="text-yellow-400"/></TooltipTrigger>
+                                                    <TooltipContent>Master</TooltipContent>
+                                                </Tooltip>
+                                            </Badge>
+                                        </div>
+
                                     </div>
-
-                                </div>
-                                <span className="text-xs font-inter">
+                                    <span className="text-xs font-inter">
                                     {user.email}
                                 </span>
-                            </div>
-                            <div className="flex items-center h-full justify-center flex-grow-0 pr-[2px]">
-                                <ChevronsUpDown className="w-[20px]"/>
-                            </div>
-                        </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56" side="right">
-                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                        <DropdownMenuSeparator/>
-                        <DropdownMenuGroup>
+                                </div>
+                                <div className="flex items-center h-full justify-center flex-grow-0 pr-[2px]">
+                                    <ChevronsUpDown className="w-[20px]"/>
+                                </div>
+                            </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56" side="right">
+                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator/>
+                            <DropdownMenuGroup>
+                                <DropdownMenuItem onClick={() => setProfile(pre => !pre)}>
+                                    <UserRoundPen/>
+                                    Profile
+                                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setSetting(pre => !pre)}>
+                                    <Settings/>
+                                    Settings
+                                    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Command/>
+                                    Keyboard shortcuts
+                                    <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setFeedback(pre => !pre)}>
+                                    <MessageSquareText/>
+                                    Feedback
+                                    <DropdownMenuShortcut>⌘F</DropdownMenuShortcut>
+                                </DropdownMenuItem>
+                            </DropdownMenuGroup>
+                            <DropdownMenuSeparator/>
                             <DropdownMenuItem>
-                                <UserRoundPen/>
-                                Profile
-                                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                                <Github/>
+                                <a href="https://github.com/FearInTheDark/" target="_blank">GitHub</a>
                             </DropdownMenuItem>
-                            {/*<DropdownMenuItem>*/}
-                            {/*    <CreditCardIcon/>*/}
-                            {/*    Billing*/}
-                            {/*    <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>*/}
-                            {/*</DropdownMenuItem>*/}
+                            <DropdownMenuItem><Bot/>Support</DropdownMenuItem>
+                            <DropdownMenuItem disabled>API</DropdownMenuItem>
+                            <DropdownMenuSeparator/>
                             <DropdownMenuItem>
-                                <Settings/>
-                                Settings
-                                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                                <LogOut/>
+                                <Link href={route('logout')} method="post" as="button">Log out</Link>
+                                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Command/>
-                                Keyboard shortcuts
-                                <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <MessageSquareText/>
-                                Feedback
-                                <DropdownMenuShortcut>⌘F</DropdownMenuShortcut>
-                            </DropdownMenuItem>
-                        </DropdownMenuGroup>
-                        {/*<DropdownMenuSeparator/>*/}
-                        {/*<DropdownMenuGroup>*/}
-                        {/*    <DropdownMenuItem>*/}
-                        {/*        <UsersRound/>*/}
-                        {/*        Team*/}
-                        {/*    </DropdownMenuItem>*/}
-                        {/*    <DropdownMenuSub>*/}
-                        {/*        <DropdownMenuSubTrigger>*/}
-                        {/*            <UserRoundPlus/>*/}
-                        {/*            Invite users*/}
-                        {/*        </DropdownMenuSubTrigger>*/}
-                        {/*        <DropdownMenuPortal>*/}
-                        {/*            <DropdownMenuSubContent>*/}
-                        {/*                <DropdownMenuItem>*/}
-                        {/*                    <Mail/>*/}
-                        {/*                    Email*/}
-                        {/*                </DropdownMenuItem>*/}
-                        {/*                <DropdownMenuItem>*/}
-                        {/*                    <MessageCircleMore/>*/}
-                        {/*                    Message*/}
-                        {/*                </DropdownMenuItem>*/}
-                        {/*                <DropdownMenuSeparator/>*/}
-                        {/*                <DropdownMenuItem>*/}
-                        {/*                    <CircleEllipsis/>*/}
-                        {/*                    More...*/}
-                        {/*                </DropdownMenuItem>*/}
-                        {/*            </DropdownMenuSubContent>*/}
-                        {/*        </DropdownMenuPortal>*/}
-                        {/*    </DropdownMenuSub>*/}
-                        {/*    <DropdownMenuItem>*/}
-                        {/*        <UserCog/>*/}
-                        {/*        New Team*/}
-                        {/*        <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>*/}
-                        {/*    </DropdownMenuItem>*/}
-                        {/*</DropdownMenuGroup>*/}
-                        <DropdownMenuSeparator/>
-                        <DropdownMenuItem><Github/>GitHub</DropdownMenuItem>
-                        <DropdownMenuItem><Bot/>Support</DropdownMenuItem>
-                        <DropdownMenuItem disabled>API</DropdownMenuItem>
-                        <DropdownMenuSeparator/>
-                        <DropdownMenuItem>
-                            <LogOut/>
-                            <Link href={route('logout')} method="post" as="button">Log out</Link>
-                            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </SidebarFooter>
-        </Sidebar>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </SidebarFooter>
+                <Suspense fallback={<Skeleton/>}>
+                    <LazyProfileDialog open={profile} setOpen={setProfile} user={user}/>
+                </Suspense>
+                <Suspense fallback={<Skeleton/>}>
+                    <LazySettingDialog open={setting} setOpen={setSetting} user={user}/>
+                </Suspense>
+                <Suspense fallback={<Skeleton className={"w-[200px] h-[100px]"}/>}>
+                    <LazyFeedback open={feedback} setOpen={setFeedback} user={user}/>
+                </Suspense>
+            </Sidebar>
     );
 }

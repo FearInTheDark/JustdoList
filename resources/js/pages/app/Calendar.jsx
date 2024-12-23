@@ -9,12 +9,15 @@ import {priorDots} from "@/common/objects"
 import {toast} from "sonner"
 import IntroLogo from "@/components/layers/IntroLogo"
 import HomeDock from "@/components/HomeDock"
+import ShinyButton from "@/components/ui/shiny-button"
+import {ReloadIcon} from "@radix-ui/react-icons"
+import LoadingOverlay from "@/components/layers/LoadingOverlay"
 
 const colors = [
-    "#f87171", "#fbbf24", "#34d399", "#60a5fa", "#818cf8", "#d97706", "#6ee7b7",
-    "#93c5fd", "#f472b6", "#fbbf24",
-    "#e879f9", "#f9a8d4", "#4ade80", "#facc15", "#38bdf8", "#c084fc", "#fb923c",
-    "#22d3ee", "#fde047", "#e11d48", "#a855f7", "#16a34a", "#1d4ed8", "#9333ea",
+    "#f87171", "#fbbf24", "#34d399", "#60a5fa", "#818cf8", "#d97706",
+    "#93c5fd", "#f472b6", "#fbbf24", "#6ee7b7", "#fb923c", "#9333ea",
+    "#e879f9", "#f9a8d4", "#4ade80", "#facc15", "#38bdf8", "#c084fc",
+    "#22d3ee", "#fde047", "#e11d48", "#a855f7", "#16a34a", "#1d4ed8",
     "#64748b", "#ef4444", "#0891b2", "#d946ef", "#ea580c", "#f43f5e"
 ];
 
@@ -25,7 +28,7 @@ const Calendar = ({tasks = []}) => {
             title: task.title,
             backgroundColor: colors[Math.floor(Math.random() * colors.length)],
             extendedProps: task,
-            className: `${task.frequency === "once" ? "text-black dark:text-gray-500" : "text-white dark:text-gray-50"} opacity-90`,
+            className: `${task.frequency === "once" ? "text-black dark:text-gray-500" : "text-white dark:text-gray-50"} opacity-70 py-1 my-1`,
             start: format(task.begin_date, "yyyy-MM-dd").concat("T", task.time),
             end: format(task.end_date, "yyyy-MM-dd").concat("T", task.time),
             date: format(task.begin_date, "yyyy-MM-dd").concat("T", task.time),
@@ -50,6 +53,28 @@ const Calendar = ({tasks = []}) => {
         }
     }
 
+    const handleReload = async () => {
+        try {
+            const res = await axios.get(route('list-calendars'));
+            const updatedTasks = res.data.tasks;
+            setEvents(
+                updatedTasks.map(task => ({
+                    id: task.id,
+                    title: task.title,
+                    backgroundColor: colors[Math.floor(Math.random() * colors.length)],
+                    extendedProps: task,
+                    className: `${task.frequency === "once" ? "text-black dark:text-gray-500" : "text-white dark:text-gray-50"} opacity-90`,
+                    start: format(task.begin_date, "yyyy-MM-dd").concat("T", task.time),
+                    end: format(task.end_date, "yyyy-MM-dd").concat("T", task.time),
+                    date: format(task.begin_date, "yyyy-MM-dd").concat("T", task.time),
+                }))
+            );
+        } catch (error) {
+            console.error("Error reloading events:", error);
+        }
+    };
+
+
     return (
         <>
             <IntroLogo srcIcon={"/storage/pages/calendar.svg"}/>
@@ -61,7 +86,8 @@ const Calendar = ({tasks = []}) => {
 
                     events={events}
                     eventClick={(e) => setSelectedTask(e.event.extendedProps)}
-                    // eventClick={(e) => console.log(e.event)}
+                    // eventClick={(e) => console.log(e)}
+
                     eventDrop={handleEventDrop}
                     slotEventOverlap={false}
 
@@ -98,8 +124,16 @@ const Calendar = ({tasks = []}) => {
                     dayCellContent={arg => (<div className="text-center text-sm">{arg.dayNumberText}</div>)}
                 />
             </div>
+            {/*Fixed rounded reload button at right bottom corner*/}
+            <div className="">
+                <ShinyButton className="fixed bottom-[3rem] right-4 z-50 p-4  text-white rounded-full shadow-lg" onClick={() => handleReload()}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width={30} height={30} viewBox="0 0 8 8">
+                        <path fill="currentColor" d="M4 0C1.8 0 0 1.8 0 4s1.8 4 4 4c1.1 0 2.12-.43 2.84-1.16l-.72-.72c-.54.54-1.29.88-2.13.88c-1.66 0-3-1.34-3-3s1.34-3 3-3c.83 0 1.55.36 2.09.91L4.99 3h3V0L6.8 1.19C6.08.47 5.09 0 3.99 0z"></path>
+                    </svg>
+                </ShinyButton>
+            </div>
             {selectedTask &&
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingOverlay/>}>
                     <LazyShowDialog selectedTask={selectedTask} setSelectedTask={setSelectedTask} setTasks={setEvents}/>
                 </Suspense>}
             <HomeDock/>

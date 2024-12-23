@@ -27,8 +27,9 @@ import {format} from "date-fns"
 import moment from "moment"
 import {usePage} from "@inertiajs/react"
 import {ScrollArea} from "@/components/ui/scroll-area"
+import {frequencies} from "@/common/objects"
 
-const TaskDialog = ({selectedTask = null, setSelectedTask, setTasks}) => {
+const TaskDialog = ({selectedTask = {}, setSelectedTask, setTasks}) => {
     const [editable, setEditable] = useState(false)
     const {user} = usePage().props
 
@@ -60,11 +61,16 @@ const TaskDialog = ({selectedTask = null, setSelectedTask, setTasks}) => {
         }
     }
 
+    const duration = (!selectedTask?.completed ? moment(selectedTask?.end_date).add(frequencies[selectedTask?.frequency], 'days') : moment(selectedTask?.end_date)).diff(moment(selectedTask?.begin_date), 'days');
+    const doneDur = moment(selectedTask?.next).diff(moment(selectedTask?.begin_date), 'days');
+    const percent = Math.round((doneDur / duration) * 100);
+
     const handleCheck = async () => {
         try {
             const res = await axios.patch(route('submit', selectedTask.id))
             const loadTask = res.data.task
             setSelectedTask(loadTask)
+            setTasks(pre => pre.map(task => task.id === selectedTask.id ? loadTask : task))
             toast.success("Task updated successfully", {
                 description: () => "Task completed"
             })
@@ -78,6 +84,7 @@ const TaskDialog = ({selectedTask = null, setSelectedTask, setTasks}) => {
             const res = await axios.patch(route('unsubmit', selectedTask.id))
             const loadTask = res.data.task
             setSelectedTask(loadTask)
+            setTasks(pre => pre.map(task => task.id === selectedTask.id ? loadTask : task))
             toast.success("Task updated successfully", {
                 description: () => "Task completed"
             })
@@ -171,12 +178,22 @@ const TaskDialog = ({selectedTask = null, setSelectedTask, setTasks}) => {
                                     : <>
                                         <span className="font-semibold text-xl font-inter">{selectedTask?.title}</span>
                                         <span className="text-sm mb-3">{selectedTask?.description}</span>
-                                        <div className="w-full flex justify-between items-center">
+                                        <div className="w-full flex justify-between items-center gap-3">
                                             <div className="end w-fit flex flex-col rounded-md px-2 border bg-red-100 dark:bg-gray-800">
                                                 <span className="font-semibold text-sm text-muted-foreground italic">Begin Date:</span>
                                                 <span>{selectedTask?.begin_date}</span>
                                             </div>
-                                            <progress className='progress w-56 progress-primary' value={10} max={100}></progress>
+                                            <div className="flex flex-col flex-1 gap-1 items-center justify-center">
+                                                {selectedTask?.frequency === 'once' ?
+                                                <>
+                                                    <span className="font-inter">{selectedTask?.completed ? 100 : 0}%</span>
+                                                    <progress className={`progress w-56 progress-primary ${selectedTask?.completed && 'progress-success'}`} value={selectedTask?.completed ? 1 : 0} max={1}></progress>
+                                                </> :
+                                                <>
+                                                    <span className="font-inter">{percent}%</span>
+                                                    <progress className={`progress w-56 progress-primary ${selectedTask?.completed && 'progress-success'}`} value={doneDur} max={duration}></progress>
+                                                </>}
+                                            </div>
                                             <div className="end w-fit flex flex-col rounded-md px-2 border bg-blue-100 dark:bg-blue-800 border-none">
                                                 <span className="font-semibold text-sm text-muted-foreground italic">End Date:</span>
                                                 <span>{selectedTask?.end_date}</span>
@@ -189,9 +206,9 @@ const TaskDialog = ({selectedTask = null, setSelectedTask, setTasks}) => {
                                     <span className="font-semibold font-ui mb-1  text-gray-500 dark:text-gray-200">History</span>
                                     <ScrollArea className="w-full relative rounded-md px-2 py-3 max-h-[400px] bg-gray-100 dark:bg-slate-700">
                                         {/*<div className=" scrollbar-hide">*/}
-                                            {selectedTask && selectedTask.histories.map((his, index) => (
-                                                <TaskHistory history={his} key={index} user={user}/>
-                                            ))}
+                                        {selectedTask && selectedTask.histories.map((his, index) => (
+                                            <TaskHistory history={his} key={index} user={user}/>
+                                        ))}
                                         {/*</div>*/}
                                     </ScrollArea>
                                 </div>

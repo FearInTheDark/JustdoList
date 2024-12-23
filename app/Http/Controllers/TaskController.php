@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class TaskController extends Controller {
@@ -20,13 +19,17 @@ class TaskController extends Controller {
         ]);
     }
 
+    private function defaultLayout() {
+        return session('defaultLayout', 'grid');
+    }
+
     public function update(Request $request, Task $task) {
         $validate = $request->validate([
-            'title' => 'string|min:4',
+            'title' => 'nullable|string|min:4',
             'description' => 'nullable|string',
-            'time' => 'string|date_format:H:i',
-            'begin_date' => 'date_format:Y-m-d',
-            'end_date' => 'date_format:Y-m-d',
+            'time' => 'nullable|string|date_format:H:i',
+            'begin_date' => 'nullable|date_format:Y-m-d',
+            'end_date' => 'nullable|date_format:Y-m-d',
             'frequency' => 'nullable|string|in:once,daily,weekly,monthly,yearly',
             'priority' => 'nullable|string|in:low,medium,high,extreme',
             'reminder' => 'nullable|boolean',
@@ -47,6 +50,7 @@ class TaskController extends Controller {
             'end_date' => 'required|date_format:Y-m-d',
             'frequency' => 'nullable|string|in:once,daily,weekly,monthly,yearly',
             'priority' => 'nullable|string|in:low,medium,high,extreme',
+            'reminder' => 'nullable|boolean',
             'completed' => 'nullable|boolean',
         ]);
         $validate['priority'] ??= 'medium';
@@ -72,8 +76,24 @@ class TaskController extends Controller {
         return response()->json(['tasks' => \request()->user()->load(['tasks.histories'])->tasks]);
     }
 
-    private function defaultLayout() {
-        return session('defaultLayout', 'grid');
+    /**
+     * List all current user **reminded** tasks
+     * */
+    public function listReminders(Request $request) {
+        $tasks = $request->user()->load('tasks')->tasks->filter(function ($task) {
+            return $task->reminder && !$task->completed && Carbon::parse($task->next)->addHour()->isAfter(now()->startOfDay());
+        })->values()->toArray();
+        return response()->json(['tasks' => $tasks, '' => '']);
+    }
+
+    /**
+     *  List all current user **calendar** tasks
+     * @param Request $request
+     * @return JsonResponse
+     * */
+    public function listCalendars(Request $request) : JsonResponse {
+        $userTasks = $request->user()->tasks()->with('histories')->where('completed', false)->get();
+        return response()->json(['tasks' => $userTasks]);
     }
 
 }

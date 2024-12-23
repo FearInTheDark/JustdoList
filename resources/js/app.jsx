@@ -4,8 +4,11 @@ import './bootstrap';
 import {createInertiaApp} from '@inertiajs/react';
 import {createRoot} from 'react-dom/client';
 import {LanguageProvider} from "@/contexts/LanguageContext"
+import {SheetProvider} from "@/contexts/SheetContext"
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
 
 const appName = import.meta.env.VITE_APP_NAME || '- JustdoList';
+const queryClient = new QueryClient()
 
 createInertiaApp({
     title: (title) => `${title}` || `${appName}`,
@@ -16,9 +19,13 @@ createInertiaApp({
     setup({el, App, props}) {
         const root = createRoot(el);
         root.render(
-            <LanguageProvider>
-                <App {...props} />
-            </LanguageProvider>
+            <QueryClientProvider client={queryClient}>
+                <LanguageProvider>
+                    <SheetProvider>
+                        <App {...props} />
+                    </SheetProvider>
+                </LanguageProvider>
+            </QueryClientProvider>
         );
     },
     progress: {

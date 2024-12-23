@@ -5,6 +5,7 @@ namespace App\Models;
 
 use App\Notifications\OTPEmail;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,8 +16,8 @@ use Illuminate\Notifications\Notifiable;
 use Random\RandomException;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements MustVerifyEmail {
-    use HasFactory, Notifiable, HasRoles;
+class User extends Authenticatable implements MustVerifyEmail, CanResetPassword {
+    use HasFactory, Notifiable, HasRoles, \Illuminate\Auth\Passwords\CanResetPassword;
 
     /**
      * The attributes that are mass assignable.
@@ -53,6 +54,10 @@ class User extends Authenticatable implements MustVerifyEmail {
 
     public function events(): BelongsToMany {
         return $this->belongsToMany(Event::class, 'events_users')->withTimestamps();
+    }
+
+    public function feedbacks(): HasMany {
+        return $this->hasMany(Feedback::class);
     }
 
     public function sendOTPVerificationEmail(): void {

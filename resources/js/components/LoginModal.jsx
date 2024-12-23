@@ -89,7 +89,7 @@ const LoginModal = () => {
                             </div>
                             <div className="flex w-full justify-between items-center">
                                 <Link href={route('loginForm')} className="text-sm text-blue-400 hover:text-blue-500 dark:text-blue-300 dark:hover:text-blue-400">To Login Page</Link>
-                                <Link href={route('forgot')} className="text-sm text-blue-400 hover:text-blue-500 dark:text-blue-300 dark:hover:text-blue-400">Forgot password?</Link>
+                                <Link href={route('password.request')} className="text-sm text-blue-400 hover:text-blue-500 dark:text-blue-300 dark:hover:text-blue-400">Forgot password?</Link>
                             </div>
                             <div className="relative flex justify-center text-xs uppercase my-2">
                                 <span className="px-2 text-muted-foreground dark:text-gray-400">Keep Rolling</span>

@@ -14,6 +14,7 @@ export default function LoginPage() {
     const {data, setData, errors, post, wasSuccessful, processing} = useForm({
         email: "",
         password: "",
+        remember: false
     })
     useEffect(() => {
         AOS.init({
@@ -103,14 +104,16 @@ export default function LoginPage() {
 
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center">
-                                    <input id="remember-me" name="remember-me" type="checkbox" className="checkbox checkbox-info rounded size-5 border-[.5px]"/>
-                                    <Label htmlFor="remember-me" className="ml-2 block text-sm text-muted-foreground dark:text-gray-400">
+                                    <input id="remember" name="remember" type="checkbox" className="checkbox checkbox-info rounded size-5 border-[.5px]"
+                                            checked={data.remember} onChange={e => setData('remember', e.target.checked)}
+                                    />
+                                    <Label htmlFor="remember" className="ml-2 block text-sm text-muted-foreground dark:text-gray-400">
                                         Remember me
                                     </Label>
                                 </div>
 
                                 <div className="text-sm">
-                                    <Link href={route('register')} className="font-medium text-primary hover:underline dark:text-primary-400">
+                                    <Link href={route('password.request')} className="font-medium text-primary hover:underline dark:text-primary-400">
                                         Forgot your password?
                                     </Link>
                                 </div>
@@ -150,7 +153,7 @@ export default function LoginPage() {
                         className={`relative max-w-[700px] inset-0 object-cover filter drop-shadow-custom-blue`}
                         src="/storage/login/loginpage.svg"
                         alt="Login background image"
-                        // data-aos="fade-left" data-aos-duration="1000"
+                        data-aos="fade-left" data-aos-duration="1000"
                     />
                 </div>
             </div>

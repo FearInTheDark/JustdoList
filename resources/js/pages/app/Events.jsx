@@ -2,14 +2,13 @@ import React, {lazy, Suspense, useEffect, useMemo, useState} from 'react';
 import AppLayout from "@/layouts/AppLayout";
 import GridPattern from "@/components/ui/grid-pattern";
 import GradualSpacing from "@/components/ui/gradual-spacing";
-import { usePage } from "@inertiajs/react";
-import { PlusIcon } from "lucide-react";
+import {usePage} from "@inertiajs/react";
+import {PlusIcon} from "lucide-react";
 import ShinyButton from "@/components/ui/shiny-button";
-import { Skeleton } from "@/components/ui/skeleton";
+import {Skeleton} from "@/components/ui/skeleton";
 import Post from "@/components/Post";
-import { MyPagination } from "@/components/MyPagination";
+import {MyPagination} from "@/components/MyPagination";
 import axios from 'axios';
-import HomeDock from "@/components/HomeDock"
 import AOS from "aos"
 
 const Events = () => {
@@ -17,13 +16,13 @@ const Events = () => {
     const [events, setEvents] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
-    const { user } = usePage().props;
+    const {user} = usePage().props;
     user.is_admin ||= false
     const isAdmin = user.is_admin ?? false;
 
     useEffect(() => {
         AOS.init({
-            once: false,
+            once: true,
             duration: 400,
             disable: "phone",
             easing: "ease-out-cubic"
@@ -35,7 +34,7 @@ const Events = () => {
         const fetchEvents = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get(`/posts?page=${page}`);
+                const response = await axios.get(route('posts', {page: page}));
                 setEvents(response.data.events);
             } catch (error) {
                 console.error("Error fetching events:", error);
@@ -48,7 +47,6 @@ const Events = () => {
     }, [page]);
 
     const LazyShowDialog = lazy(() => import('@/components/app/ShowEvent'))
-
 
     return (
         <>
@@ -67,26 +65,26 @@ const Events = () => {
 
                     {isLoading ? (
                         <>
-                        <LoadingSkeleton />
-                        <LoadingSkeleton />
-                        <LoadingSkeleton />
-                        <LoadingSkeleton />
-                        <LoadingSkeleton />
-                        <LoadingSkeleton />
-                        <LoadingSkeleton />
-                        <LoadingSkeleton />
+                            <LoadingSkeleton/>
+                            <LoadingSkeleton/>
+                            <LoadingSkeleton/>
+                            <LoadingSkeleton/>
+                            <LoadingSkeleton/>
+                            <LoadingSkeleton/>
+                            <LoadingSkeleton/>
+                            <LoadingSkeleton/>
                         </>
 
                     ) : (
                         <>
                             {events?.data.map((event) => (
-                                    <Post event={event} key={event.title} onClick={() => setSelectedEvent(event)}/>
+                                <Post event={event} key={event.title} onClick={() => setSelectedEvent(event)}/>
                             ))}
 
-                            <MyPagination links={events?.links || []} action={setPage} />
+                            <MyPagination links={events?.links || []} action={setPage}/>
 
                             {selectedEvent && (
-                                <Suspense fallback={<LoadingSkeleton />}>
+                                <Suspense fallback={<LoadingSkeleton/>}>
                                     <LazyShowDialog event={selectedEvent} setEvent={setSelectedEvent} setEvents={setEvents}/>
                                 </Suspense>
                             )}
@@ -96,7 +94,7 @@ const Events = () => {
 
                 {isAdmin && (
                     <ShinyButton className="fixed bottom-10 right-10 p-4 rounded-full text-white shadow-lg hover:scale-105 transition-all duration-300">
-                        <PlusIcon className="w-10 h-10" />
+                        <PlusIcon className="w-10 h-10"/>
                     </ShinyButton>
                 )}
             </div>
@@ -106,10 +104,10 @@ const Events = () => {
 
 const LoadingSkeleton = () => (
     <div className="flex flex-col space-y-3 mx-auto">
-        <Skeleton className="h-[125px] w-full rounded-xl" />
+        <Skeleton className="h-[125px] w-full rounded-xl"/>
         <div className="space-y-2">
-            <Skeleton className="h-4 w-[250px]" />
-            <Skeleton className="h-4 w-[200px]" />
+            <Skeleton className="h-4 w-[250px]"/>
+            <Skeleton className="h-4 w-[200px]"/>
         </div>
     </div>
 );

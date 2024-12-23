@@ -17,8 +17,7 @@ class EventController extends Controller {
 
     public function destroy() {}
 
-    public function posts()
-    {
+    public function posts() {
         $events = Event::with(['author' => fn($query) => $query->select('id', 'name', 'image')])
             ->with(['participants' => fn($query) => $query->select('users.id', 'users.name')])
             ->paginate(8);
@@ -31,7 +30,11 @@ class EventController extends Controller {
             return response()->json(['message' => 'Already joined!', 'status' => 'joined'], 400);
         }
         $event->participants()->attach($user);
-        return response()->json(['event' => $event]);
+        return response()->json([
+            'event' => $event->load([
+                'participants' => fn($query) => $query->select('users.id', 'users.name'),
+                'author' => fn($query) => $query->select('id', 'name', 'image')])
+        ]);
     }
 
     public function leave(Event $event, User $user) {
@@ -39,6 +42,10 @@ class EventController extends Controller {
             return response()->json(['message' => 'Not joined!'], 400);
         }
         $event->participants()->detach($user);
+        $event->load([
+            'participants' => fn($query) => $query->select('users.id', 'users.name'),
+            'author' => fn($query) => $query->select('id', 'name', 'image')
+        ]);
         return response()->json(['event' => $event]);
     }
 }

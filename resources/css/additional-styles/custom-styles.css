@@ -43,3 +43,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     height: 20px;
     border-width: thin;
 }
+
+.custom-border {
+    background: conic-gradient(from 0deg, transparent 0deg 45deg, #3b82f6 45deg 90deg, transparent 90deg 360deg);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), black calc(100% - 2px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), black calc(100% - 2px));
+}

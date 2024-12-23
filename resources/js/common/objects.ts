@@ -5,6 +5,14 @@ const priorities = {
     extreme: 4,
 } as const
 
+const frequencies = {
+    once: -1,
+    daily: 1,
+    weekly: 7,
+    monthly: 30,
+    yearly: 365,
+} as const
+
 const keywords = {
     '_today': {
         frequency: 'once',
@@ -88,4 +96,4 @@ const frequencyDescriptions = {
     yearly: "This task should be done yearly",
 } as const
 
-export {priorities, frequencyDescriptions, keywords, responsive, freDots, priorDots}
+export {priorities, frequencyDescriptions, keywords, responsive, freDots, priorDots, frequencies}

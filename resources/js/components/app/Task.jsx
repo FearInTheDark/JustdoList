@@ -42,7 +42,7 @@ const Task = ({task, tasks, setTasks, setSelectedTask, layout}) => {
                             className="mt-1 border-0 data-[state=checked]:bg-blue-400 dark:bg-gray-300 bg-gray-200"
                             onClick={(e) => e.stopPropagation()}
                         />
-                        {task.completed ? (<img src="/storage/sources/tasks/note.svg" alt="note"/>) : (
+                        {task.completed ? (<img src="/storage/pages/tasks/note.svg" alt="note"/>) : (
                             <div className="mr-2">
                                 <GripVertical className="h-5 w-5 text-gray-400 cursor-move pr-1"/>
                             </div>)}

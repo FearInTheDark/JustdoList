@@ -125,7 +125,7 @@ const Tasks = ({taskss = null, title, type = null, defaultLayout = "grid"}) => {
                 width={20} height={20}
                 x={-1} y={-1}
                 strokeDasharray={"4 2"}
-                className="[mask-image:radial-gradient(900px_circle_at_center,white,transparent)] z-0"/>
+                className="fixed [mask-image:radial-gradient(900px_circle_at_center,white,transparent)] z-0 size-full"/>
             <IntroLogo srcIcon={'/storage/pages/tasks.svg'}/>
             <div className={`h-full px-8 pb-0 pt-12 bg-gray-100 dark:bg-gray-800`}>
                 <div className="max-w-6xl mx-auto">
@@ -192,12 +192,12 @@ const Tasks = ({taskss = null, title, type = null, defaultLayout = "grid"}) => {
                                       setSelectedTask={setSelectedTask}
                                       layout={layout}/>)}
                         </div>
-                    ) : <Carousel responsive={responsive} infinite autoPlaySpeed={10000}
-                                  containerClass="max-w-task-dialog [max-width:_min(600px,_70%)] overflow-hidden mx-auto"
+                    ) : <Carousel responsive={responsive} infinite autoPlaySpeed={10000} focusOnSelect={false}
+                                  containerClass=" [max-width:_min(600px,_70%)] overflow-hidden mx-auto select-none"
                                   autoPlay arrows={false}
                     >
                             {Array.from({length: 2}, (_, i) =>
-                                <img src={`/storage/pages/tasks/finish${i + 1}.svg`} alt="Finished Image" key={i} className="drop-shadow-lg"/>)}
+                                <img src={`/storage/pages/tasks/finish${i + 1}.svg`} alt="Finished Image" key={i} className="drop-shadow-lg select-none"/>)}
                         </Carousel>
                     }
 

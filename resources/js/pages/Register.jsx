@@ -10,7 +10,6 @@ import {ArrowLeft, Lock, Mail} from "lucide-react";
 import {Label} from "@/components/ui/label";
 import {cn} from "@/lib/utils"
 import AnimatedGridPattern from "@/components/ui/animated-grid-pattern"
-import {Checkbox} from "@/components/ui/checkbox"
 
 const Register = () => {
     useEffect(() => {
@@ -78,7 +77,7 @@ const Register = () => {
                         className={`relative inset-0 max-w-[700px] object-cover filter drop-shadow-custom-blue`}
                         src="/storage/login/login_green.svg"
                         alt="Login background image"
-                        data-aos="fade-left" data-aos-duration="1000"
+                        data-aos="fade-right" data-aos-duration="1000"
                     />
                 </div>
 
@@ -142,7 +141,9 @@ const Register = () => {
 
                             <div className="flex items-center justify-between transition-all">
                                 <div className="flex items-center">
-                                    <input id="remember-me" name="remember-me" type="checkbox" className="checkbox checkbox-info rounded size-5" onChange={(e) => setData({...data, remember_me: e.target.checked})}/>
+                                    <input id="remember-me" name="remember-me" type="checkbox" className="checkbox checkbox-info rounded size-5" onChange={(e) => setData({
+                                        ...data, remember_me: e.target.checked
+                                    })}/>
                                     <Label htmlFor="remember-me" className="ml-2 block text-sm text-muted-foreground dark:text-gray-400">
                                         Remember me
                                     </Label>

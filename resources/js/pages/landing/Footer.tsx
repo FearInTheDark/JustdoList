@@ -14,8 +14,8 @@ export default function Footer({ border = false }: { border?: boolean }) {
             <div>
               <Logo />
             </div>
-            <div className="text-sm text-gray-600">
-              &copy; Cruip.com - All rights reserved.
+            <div className="text-sm text-gray-600 dark:text-gray-400 dark:hover:text-gray-50">
+              &copy; JustdoList - All rights reserved.
             </div>
           </div>
 
@@ -25,7 +25,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
+                  className="text-gray-600 dark:text-gray-400 dark:hover:text-gray-50 transition hover:text-gray-900"
                   href="#"
                 >
                   Features
@@ -33,7 +33,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
+                  className="text-gray-600 dark:text-gray-400 dark:hover:text-gray-50 transition hover:text-gray-900"
                   href="#"
                 >
                   Integrations
@@ -41,15 +41,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#"
-                >
-                  Pricing & Plans
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
+                  className="text-gray-600 dark:text-gray-400 dark:hover:text-gray-50 transition hover:text-gray-900"
                   href="#"
                 >
                   Changelog
@@ -57,7 +49,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
+                  className="text-gray-600 dark:text-gray-400 dark:hover:text-gray-50 transition hover:text-gray-900"
                   href="#"
                 >
                   Our method
@@ -72,7 +64,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
+                  className="text-gray-600 dark:text-gray-400 dark:hover:text-gray-50 transition hover:text-gray-900"
                   href="#"
                 >
                   About us
@@ -80,7 +72,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
+                  className="text-gray-600 dark:text-gray-400 dark:hover:text-gray-50 transition hover:text-gray-900"
                   href="#"
                 >
                   Diversity & Inclusion
@@ -88,7 +80,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
+                  className="text-gray-600 dark:text-gray-400 dark:hover:text-gray-50 transition hover:text-gray-900"
                   href="#"
                 >
                   Blog
@@ -96,7 +88,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
+                  className="text-gray-600 dark:text-gray-400 dark:hover:text-gray-50 transition hover:text-gray-900"
                   href="#"
                 >
                   Careers
@@ -104,7 +96,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
+                  className="text-gray-600 dark:text-gray-400 dark:hover:text-gray-50 transition hover:text-gray-900"
                   href="#"
                 >
                   Financial statements
@@ -119,7 +111,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
+                  className="text-gray-600 dark:text-gray-400 dark:hover:text-gray-50 transition hover:text-gray-900"
                   href="#"
                 >
                   Community
@@ -127,7 +119,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
+                  className="text-gray-600 dark:text-gray-400 dark:hover:text-gray-50 transition hover:text-gray-900"
                   href="#"
                 >
                   Terms of service
@@ -135,7 +127,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
               </li>
               <li>
                 <Link
-                  className="text-gray-600 transition hover:text-gray-900"
+                  className="text-gray-600 dark:text-gray-400 dark:hover:text-gray-50 transition hover:text-gray-900"
                   href="#"
                 >
                   Report a vulnerability

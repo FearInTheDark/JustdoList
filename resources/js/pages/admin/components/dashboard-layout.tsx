@@ -1,13 +1,3 @@
-import { Search } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import React from "react";
 
 interface DashboardLayoutProps {
@@ -16,7 +6,7 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
     return (
-        <div className="p-4">
+        <div className="p-4 mb-20">
             <div className="flex min-h-screen flex-col">
                 {/*<header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 rounded-lg px-2">*/}
                 {/*    <div className="container flex h-14 items-center justify-between">*/}

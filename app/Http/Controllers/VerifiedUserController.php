@@ -16,8 +16,9 @@ class VerifiedUserController extends Controller {
             'email' => 'required|email',
             'password' => 'required|min:3'
         ]);
+        $remember = $request->has('remember');
 
-        if (!Auth::attempt($validate)) {
+        if (!Auth::attempt($validate, $remember)) {
             throw ValidationException::withMessages([
                 'email' => 'Sorry, those credentials do not match!'
             ]);
