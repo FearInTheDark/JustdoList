@@ -18,8 +18,8 @@ export function MetricCards() {
         })
     })
     return (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="dark:bg-[#1a1a1a]">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 z-10">
+            <Card className="dark:bg-[#1a1a1a] z-10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Total Users</CardTitle>
                     <Users2 className="h-4 w-4 text-muted-foreground"/>
@@ -33,7 +33,7 @@ export function MetricCards() {
                     </p>
                 </CardContent>
             </Card>
-            <Card className="dark:bg-[#1a1a1a]">
+            <Card className="dark:bg-[#1a1a1a] z-10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Tasks</CardTitle>
                     <Notebook className="h-4 w-4 text-muted-foreground"/>
@@ -47,7 +47,7 @@ export function MetricCards() {
                     </p>
                 </CardContent>
             </Card>
-            <Card className="dark:bg-[#1a1a1a]">
+            <Card className="dark:bg-[#1a1a1a] z-10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Events</CardTitle>
                     <Earth className="h-4 w-4 text-muted-foreground"/>
@@ -61,7 +61,7 @@ export function MetricCards() {
                     </p>
                 </CardContent>
             </Card>
-            <Card className="dark:bg-[#1a1a1a]">
+            <Card className="dark:bg-[#1a1a1a] z-10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Feedbacks</CardTitle>
                     <MessageSquareText className="h-4 w-4 text-muted-foreground"/>

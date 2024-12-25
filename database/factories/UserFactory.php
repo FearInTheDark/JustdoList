@@ -29,6 +29,8 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'birthday' => $this->faker->date(),
             'remember_token' => Str::random(10),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'updated_at' => now()
         ];
     }
 

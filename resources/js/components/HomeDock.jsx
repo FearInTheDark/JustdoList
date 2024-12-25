@@ -71,11 +71,6 @@ const DATA = {
                 url: "#",
                 icon: Icons.linkedin,
             },
-            YouTube: {
-                name: "YouTube",
-                url: "https://www.youtube.com",
-                icon: Icons.youtube,
-            },
             email: {
                 name: "Send Email",
                 url: "inbox",

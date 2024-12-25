@@ -127,23 +127,24 @@ const items = [
         route: 'search',
         icon: Search,
     },
-    {
-        title: "Settings",
-        url: "/register",
-        route: 'register',
-        icon: Settings,
-    },
+    // {
+    //     title: "Settings",
+    //     url: "/register",
+    //     route: 'register',
+    //     icon: Settings,
+    // },
     {
         title: "Logout",
-        url: 'logout',
+        url: '/logout',
+        route: 'logout',
         method: 'post',
         icon: LogOut,
     },
-    {
-        title: "File Upload",
-        url: '/file',
-        icon: FileBox
-    }
+    // {
+    //     title: "File Upload",
+    //     url: '/file',
+    //     icon: FileBox
+    // }
 ]
 const adminItems = [
     {
@@ -364,13 +365,13 @@ export function AppSidebar() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </SidebarFooter>
-                <Suspense fallback={<Skeleton/>}>
+                <Suspense fallback={<Skeleton className={"w-[200px] h-[100px] fixed top-1/2 right-1/2 hidden"}/>}>
                     <LazyProfileDialog open={profile} setOpen={setProfile} user={user}/>
                 </Suspense>
-                <Suspense fallback={<Skeleton/>}>
+                <Suspense fallback={<Skeleton className={"w-[200px] h-[100px] fixed top-1/2 right-1/2 hidden"}/>}>
                     <LazySettingDialog open={setting} setOpen={setSetting} user={user}/>
                 </Suspense>
-                <Suspense fallback={<Skeleton className={"w-[200px] h-[100px]"}/>}>
+                <Suspense fallback={<Skeleton className={"w-[200px] h-[100px] fixed top-1/2 right-1/2 hidden"}/>}>
                     <LazyFeedback open={feedback} setOpen={setFeedback} user={user}/>
                 </Suspense>
             </Sidebar>

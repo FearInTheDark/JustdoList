@@ -28,7 +28,7 @@ const Calendar = ({tasks = []}) => {
             title: task.title,
             backgroundColor: colors[Math.floor(Math.random() * colors.length)],
             extendedProps: task,
-            className: `${task.frequency === "once" ? "text-black dark:text-gray-500" : "text-white dark:text-gray-50"} opacity-70 py-1 my-1`,
+            className: `${task.frequency === "once" ? "text-black dark:text-gray-500" : "text-white dark:text-gray-50"} opacity-80 py-1 my-1`,
             start: format(task.begin_date, "yyyy-MM-dd").concat("T", task.time),
             end: format(task.end_date, "yyyy-MM-dd").concat("T", task.time),
             date: format(task.begin_date, "yyyy-MM-dd").concat("T", task.time),

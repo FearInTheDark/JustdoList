@@ -10,7 +10,7 @@ import {Ellipsis, Pen, PencilIcon, PenIcon, Recycle, TrashIcon} from "lucide-rea
 import {downloadImage} from "@/common/additional-functions"
 import {Button} from "@/components/ui/button"
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu"
-import feedback from "@/components/app/feedback"
+import {ReloadIcon} from "@radix-ui/react-icons"
 
 const chartConfig = {
     task_count: {
@@ -75,7 +75,7 @@ const Profile = ({open, setOpen, user}) => {
                                     </Badge>
                                     <PencilIcon className="size-4 ml-2 hidden group-hover:block transform transition-all duration-300 cursor-pointer"/>
                                 </div>
-                                <div className="flex">
+                                <div className="flex gap-2 flex-wrap">
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
                                             <Button variant='outline'>
@@ -88,6 +88,9 @@ const Profile = ({open, setOpen, user}) => {
                                             </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
+                                    <Button variant="outline" onClick={() => {}}>
+                                        <ReloadIcon/>
+                                    </Button>
                                 </div>
                             </div>
                             <span className="text-muted-foreground font-thin italic">{user.email}</span>
@@ -113,7 +116,6 @@ const Profile = ({open, setOpen, user}) => {
                                             margin={{
                                                 left: -20,
                                             }}
-
                                         >
                                             <XAxis type="number" dataKey="task_count" hide/>
                                             <YAxis

@@ -15,8 +15,8 @@ import {Checkbox} from "@/components/ui/checkbox"
 const features = [
     {
         Icon: FileTextIcon,
-        name: "Save your files",
-        description: "We automatically save your files as you type.",
+        name: "Save your time",
+        description: "We manage your tasks to scheduling as you type.",
         href: "/",
         cta: "Learn more",
         background: (
@@ -36,7 +36,7 @@ const features = [
         href: "/tasks",
         cta: "Learn more",
         background: (
-            <div className={`bg-white dark:bg-gray-700 cursor-pointer rounded-lg z-[11] relative shadow-md p-4 pb-2 transition-all duration-300 ease-in-out hover:shadow-lg select-none hover:ring-blue-400 hover:ring-1`}>
+            <div className={`bg-white dark:bg-gray-700 cursor-pointer rounded-lg z-[11] hidden lg:block relative shadow-md p-4 pb-2 transition-all duration-300 ease-in-out hover:shadow-lg select-none hover:ring-blue-400 hover:ring-1`}>
                 <div className="flex flex-col justify-between h-full">
                     <div className="flex items-start h-full">
                         <div className="inline-flex flex-col h-full gap-4">
@@ -73,7 +73,7 @@ const features = [
         Icon: CalendarIcon,
         name: "Calendar",
         description: "Use the calendar to filter your tasks by date.",
-        href: "/",
+        href: "/calendar",
         cta: "Learn more",
         background: (
             <Calendar

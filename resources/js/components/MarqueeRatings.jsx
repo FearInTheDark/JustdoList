@@ -22,11 +22,11 @@ const ReviewCard = ({user, content,}) => {
                     <figcaption className="text-sm font-medium dark:text-white">
                         {user.name}
                     </figcaption>
-                    <p className="text-xs font-medium dark:text-white/40">{user.email}</p>
+                    <p className="text-xs font-medium text-muted-foreground dark:text-white/40">{user.email}</p>
                 </div>
             </div>
             <blockquote className="mt-2 text-sm">
-                {content.length > 50 ? content.slice(0, 50) + '...' : content}
+                <div dangerouslySetInnerHTML={{__html: content}}/>
             </blockquote>
         </figure>
     );

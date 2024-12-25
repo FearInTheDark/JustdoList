@@ -23,6 +23,10 @@
     @apply font-medium;
 }
 
+.fc .fc-toolbar-title {
+    @apply capitalize;
+}
+
 .fc td[role="gridcell"] {
     @apply dark:bg-gray-700
 }

@@ -30,6 +30,8 @@ class TaskFactory extends Factory {
             'begin_date' => $this->faker->dateTimeBetween('-1 year', ),
             'end_date' => $this->faker->dateTimeBetween('now', '+3 week'),
             'reminder' => $this->faker->boolean(),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', '-5 month'),
+            'updated_at' => $this->faker->dateTimeBetween('-5 month', 'now'),
         ];
     }
 }

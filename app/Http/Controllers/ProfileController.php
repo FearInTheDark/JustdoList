@@ -19,10 +19,21 @@ class ProfileController extends Controller {
         $taskCounts = TaskHistory::query()
             ->join('tasks', 'task_histories.task_id', '=', 'tasks.id')
             ->where('tasks.user_id', Auth::id())
-            ->where('task_histories.type', 'updated')
-            ->where('task_histories.title', 'Task submitted')
             ->where('task_histories.created_at', '>=', Carbon::today()->subDays(6))
-            ->selectRaw('DATE(task_histories.created_at) as submission_date, COUNT(*) as task_count')
+            ->selectRaw("
+            DATE(task_histories.created_at) as submission_date,
+            SUM(CASE
+                WHEN (task_histories.type = 'updated' AND task_histories.title = 'Task submitted')
+                     OR task_histories.type = 'finished'
+                THEN 1
+                ELSE 0
+            END) -
+            SUM(CASE
+                WHEN task_histories.type = 'missed'
+                THEN 1
+                ELSE 0
+            END) as task_count
+        ")
             ->groupByRaw('DATE(task_histories.created_at)')
             ->pluck('task_count', 'submission_date');
 

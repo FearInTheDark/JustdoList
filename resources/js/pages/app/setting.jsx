@@ -45,19 +45,19 @@ const tabs = [
         title: "General",
         content: "General settings",
         icon: <Settings/>,
-        action: (user, setUser) => General(user, setUser)
+        action: (user, setUser) => <General user={user} setUser={setUser}/>
     },
     {
         title: "Profile",
         content: "Profile settings",
         icon: <User/>,
-        action: (user, setUser) => Profile(user, setUser)
+        action: (user, setUser) => <Profile user={user} setUser={setUser}/>
     },
     {
         title: "Security",
         content: "Security settings",
         icon: <LockKeyhole/>,
-        action: (user, setUser) => Security(user, setUser)
+        action: (user, setUser) => <Security user={user} setUser={setUser}/>
     },
     {
         title: "Appearance",

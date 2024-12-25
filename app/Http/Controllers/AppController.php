@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feedback;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -47,14 +48,27 @@ class AppController extends Controller {
         return response()->json(['message' => "User can provide feedback"]);
     }
 
+    public function sendFeedback(Request $request) {
+        // Request contains 'feedback' field is a raw html tag presents. How can I save it to db and display it in the frontend?
+
+        $request->validate([
+            'feedback' => 'required|string',
+        ]);
+        $feedback = Feedback::create([
+            'user_id' => $request->user()->id,
+            'content' => $request->input('feedback'),
+        ]);
+
+        return response()->json(['message' => 'Feedback sent']);
+    }
+
 
     public function send(Request $request) {
         $request->validate([
-            'file' => 'required|file|mimes:jpg,png,pdf|max:2048',
+            'file' => 'required|file|mimes:jpg,png,jpeg,svg,gif|max:2048',
         ]);
 
-        $newName = strtolower(auth()->user()->name . '-' . auth()->user()->id . '-'
-            . $request->file('file')->getClientOriginalName());
+        $newName = strtolower(auth()->user()->name . '-' . auth()->user()->id . "." . $request->file('file')->getClientOriginalExtension());
 
         $path = $request->file('file')->storeAs('app/avatars', $newName, 'public');
 

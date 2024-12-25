@@ -8,6 +8,7 @@ class FeedbackController extends Controller {
     public function fetchLanding() {
         $feedbacks = Feedback::with('user:id,name,email,image')
             ->latest()
+            ->where('handled', true)
             ->take(50)
             ->get(['content', 'user_id']);
         return response()->json($feedbacks);

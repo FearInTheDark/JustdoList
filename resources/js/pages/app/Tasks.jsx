@@ -105,6 +105,7 @@ const Tasks = ({taskss = null, title, type = null, defaultLayout = "grid"}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            if (data.title.length < 5) return
             const res = await axios.post(route('tasks.store'), data)
             const newTask = res.data.task
             setTasks((prev) => [...prev, newTask]);

@@ -13,7 +13,7 @@ import {Button} from "@/components/ui/button";
 import {BorderBeam} from "@/components/ui/border-beam";
 import {Link, useForm} from "@inertiajs/react";
 import {toast} from "sonner";
-import {useLanguage} from "@/contexts/LanguageContext"
+import {Label} from "@/components/ui/label"
 
 const LoginModal = () => {
     const {data, setData, post, processing, wasSuccessful, errors} = useForm({
@@ -90,6 +90,14 @@ const LoginModal = () => {
                             <div className="flex w-full justify-between items-center">
                                 <Link href={route('loginForm')} className="text-sm text-blue-400 hover:text-blue-500 dark:text-blue-300 dark:hover:text-blue-400">To Login Page</Link>
                                 <Link href={route('password.request')} className="text-sm text-blue-400 hover:text-blue-500 dark:text-blue-300 dark:hover:text-blue-400">Forgot password?</Link>
+                            </div>
+                            <div className="flex items-center">
+                                <input id="remember" name="remember" type="checkbox" className="checkbox checkbox-info rounded size-5 border-[.5px]"
+                                       checked={data.remember} onChange={e => setData('remember', e.target.checked)}
+                                />
+                                <Label htmlFor="remember" className="ml-2 block text-sm text-muted-foreground dark:text-gray-400">
+                                    Remember me
+                                </Label>
                             </div>
                             <div className="relative flex justify-center text-xs uppercase my-2">
                                 <span className="px-2 text-muted-foreground dark:text-gray-400">Keep Rolling</span>

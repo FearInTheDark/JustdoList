@@ -6,6 +6,7 @@ use App\Http\Requests\DeleteUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
+use function Symfony\Component\String\u;
 
 class UserController extends Controller {
     /**
@@ -32,8 +33,9 @@ class UserController extends Controller {
         $validate = array_merge($validate, $request->validate([
             'password' => ['required', 'min:2', 'confirmed', Password::min(2)->letters()]
         ]));
+        $remember = $request->has('remember-me');
         $user = User::query()->create($validate);
-        auth()->login($user);
+        auth()->login($user, $remember);
         return redirect('/')->with(['success' => 'User created']);
     }
 
@@ -62,6 +64,23 @@ class UserController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user) {
+        $validate = $request->validate([
+            'name' => ['string'],
+            'email' => ['email', 'max:254'],
+            'email_verified_at' => ['nullable', 'date'],
+            'password' => ['nullable', 'min:2', 'confirmed', Password::min(2)->letters()],
+            'birthday' => ['nullable', 'date:Y-m-d'],
+            'finished_tasks' => ['integer'],
+            'image' => ['nullable'],
+        ]);
+
+        if ($request->filled('verified')) {
+            $validate['email_verified_at'] = $request->input('verified') ? now() : null;
+        }
+
+        $user->update($validate);
+
+        return response()->json(['user' => $user]);
     }
 
     /**

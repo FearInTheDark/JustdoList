@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class TaskAnalyticsController extends Controller {
@@ -55,5 +56,18 @@ class TaskAnalyticsController extends Controller {
             ->get();
         return response()->json($data);
     }
+
+    public function table(Request $request) {
+        $query = Task::query()->with('histories');
+        if ($request->filled('searchValue')) {
+            $query->where('title', 'like', '%' . $request->get('searchValue') . '%')
+                ->orWhere('description', 'like', '%' . $request->get('searchValue') . '%')
+            ->orderBy('priority');
+        }
+        $tasks = $query->paginate(20);
+
+        return response()->json($tasks);
+    }
+
 
 }

@@ -28,7 +28,7 @@ const  Dashboard = () => {
                     <TabsContent value="overview" className="space-y-4">
                         <MetricCards/>
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                            <Card className="col-span-5 dark:bg-[#1a1a1a]">
+                            <Card className="col-span-5 dark:bg-[#1a1a1a] z-10">
                                 <CardHeader>
                                     <CardTitle>Overview</CardTitle>
                                 </CardHeader>
@@ -36,7 +36,7 @@ const  Dashboard = () => {
                                     <OverviewChart />
                                 </CardContent>
                             </Card>
-                            <Card className="col-span-4 md:col-span-2 dark:bg-[#1a1a1a]">
+                            <Card className="col-span-4 md:col-span-2 dark:bg-[#1a1a1a] z-10">
                                 <CardHeader>
                                     <CardTitle>Most Attributes</CardTitle>
                                     <CardDescription>

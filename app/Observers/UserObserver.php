@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\User;
+use Random\RandomException;
 
 class UserObserver
 {
@@ -11,7 +12,12 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        $user->update(['image' => 'default.png']);
+        try {
+            $randomImage = "packages/avatar" . random_int(1, 100) . ".png";
+            $user->update(['image' => $randomImage]);
+        } catch (RandomException $e) {
+            $user->update(['image' => 'packages/avatar1.png']);
+        }
     }
 
     /**

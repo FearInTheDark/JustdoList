@@ -66,7 +66,20 @@ class Task extends Model {
                         'updated_at' => now(),
                     ];
                 }
-            } else {
+                continue;
+            }
+            if ($field === 'completed') {
+                $data[] = [
+                    'task_id' => $this->id,
+                    'type' => $this->getAttribute($field) ? 'finished' : 'missed',
+                    'title' => $this->getAttribute($field) ? 'Task completed' : 'Task uncompleted',
+                    'content' => $this->getAttribute($field) ? 'Task was completed.' : 'Task was uncompleted.',
+                    'status' => $this->getAttribute($field),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+            else {
                 $data[] = [
                     'task_id' => $this->id,
                     'type' => 'updated',

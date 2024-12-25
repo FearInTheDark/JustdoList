@@ -15,7 +15,8 @@ export const SheetProvider = ({children}) => {
         if (window.location.pathname === '/') return;
         fetchTasks().then()
         const listener = (e) => {
-            if (e.key === "L") setSheetOpen(pre => !pre)
+            if (e.ctrlKey && e.shiftKey && e.key === "L")
+                setSheetOpen(pre => !pre)
             else if (e.key === "K") fetchTasks().then()
         }
         document.addEventListener("keydown", listener)

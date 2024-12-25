@@ -1,7 +1,7 @@
 import React from 'react';
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 
-const General = () => {
+const General = ({user, setUser}) => {
     return (
         <div className="w-full max-w-md space-y-8 p-6">
             <div className="space-y-2">

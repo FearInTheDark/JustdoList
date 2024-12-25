@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmitController;
 use App\Http\Controllers\TaskAnalyticsController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserAnalysisController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifiedUserController;
 use App\Http\Controllers\VerifyController;
@@ -42,7 +43,7 @@ Route::get('/feedback-landing', [FeedbackController::class, 'fetchLanding'])->na
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/theme', [AppController::class, 'theme'])->name('theme');
 
-Route::resource('users', UserController::class);
+Route::resource('users', UserController::class)->only(['store']);
 
 
 Route::prefix('/language')->group(function () {
@@ -69,6 +70,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('users', UserController::class)->except(['store']);
+
     // Pages routes
     Route::get('/home', [AppController::class, 'home'])->name('home');
     Route::resource('tasks', TaskController::class)
@@ -118,16 +121,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::prefix('/admin')->group(function () {
             Route::get('users', fn() => Inertia::render('admin/users'))->name('admin.users');
             Route::get('tasks', fn() => Inertia::render('admin/tasks'))->name('admin.tasks');
+            Route::get('events', fn() => Inertia::render('admin/events'))->name('admin.events');
+            Route::get('feedbacks', fn() => Inertia::render('admin/feedbacks'))->name('admin.feedbacks');
         });
         Route::prefix('/analytics')->group(function () {
             Route::get('/metric-overview', [AnalyticsController::class, 'metric'])->name('analytics.metric');
             Route::prefix('/tasks')->group(function () {
                 Route::get('/analysis', [TaskAnalyticsController::class, 'analysis'])->name('task-analytics');
                 Route::get('/overview', [TaskAnalyticsController::class, 'overview'])->name('analytics-task.overview');
+                Route::get('/table', [TaskAnalyticsController::class, 'table'])->name('analytics-task.table');
+            });
+            Route::prefix('/users')->group(function () {
+                Route::get('/analysis', [UserAnalysisController::class, 'analysis'])->name('analysis-user');
+                Route::get('/overview', [UserAnalysisController::class, 'overview'])->name('overview-user');
+                Route::get('/table', [UserAnalysisController::class, 'table'])->name('table-user');
+
+                Route::delete('/destroy/{user}', [UserAnalysisController::class, 'singleDestroy'])->name('single-destroy');
+                Route::delete('/mass-destroy/', [UserAnalysisController::class, 'massDestroy'])->name('mass-destroy');
+
+                Route::post('/assign/{user}/{role}', [UserAnalysisController::class, 'assignRole'])->name('assign.role');
             });
             Route::prefix('/feedbacks')->group(function () {});
         });
 
+        Route::delete('/mass-delete-tasks', [AdminController::class, 'massDeleteTasks'])->name('admin.mass-delete-tasks');
     });
 });
 

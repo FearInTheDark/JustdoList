@@ -8,7 +8,8 @@ import {Label} from "@/components/ui/label"
 import {Input} from "@/components/ui/input"
 import {Switch} from "@/components/ui/switch"
 
-const Profile = (user, setUser) => {
+const Profile = ({user, setUser}) => {
+    const [name, setName] = React.useState(user.name)
     const fileInputRef = useRef(null);
 
     const {getRootProps, getInputProps, isDragActive} = useDropzone({
@@ -38,6 +39,10 @@ const Profile = (user, setUser) => {
         fileInputRef.current.click();
     };
 
+    const handleRemovePhoto = () => {
+
+    }
+
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -65,7 +70,7 @@ const Profile = (user, setUser) => {
                     <div className="space-y-2">
                         <div className="flex gap-2">
                             <Button variant="secondary" onClick={handleChangePhotoClick}>Change photo</Button>
-                            <Button variant="outline" className="text-red-500">Remove photo</Button>
+                            <Button variant="outline" className="text-red-500" onClick={handleRemovePhoto}>Remove photo</Button>
                         </div>
                         <p className="text-sm text-muted-foreground">
                             Pick a photo up to 4MB. Your avatar photo will be public.
@@ -81,12 +86,20 @@ const Profile = (user, setUser) => {
                         id="name"
                         defaultValue="Anonymous"
                         maxLength={255}
-                        value={user.name}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                     />
                     <span className="absolute right-2 top-2.5 text-sm text-muted-foreground">
-            7/255
-          </span>
+                        {`${name.length}/255`}
+                    </span>
                 </div>
+                {name !== user.name &&
+                    <Button variant="secondary"
+                            onClick={() => toast.error("Unavailable")}
+                            className="transition-all transform duration-300 ease-in">
+                        Change name
+                    </Button>
+                }
             </div>
 
             <div className="space-y-2">
@@ -120,6 +133,5 @@ const Profile = (user, setUser) => {
         </div>
     )
 }
-
 
 export default Profile;

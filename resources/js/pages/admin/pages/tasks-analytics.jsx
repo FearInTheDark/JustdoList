@@ -7,6 +7,7 @@ import TasksTable from "@/pages/admin/components/tasks/tasks-table"
 import TaskReminders from "@/pages/admin/components/tasks/task-reminders"
 import {useQuery} from "@tanstack/react-query"
 import {Skeleton} from "@/components/ui/skeleton"
+import TaskOfTable from "@/pages/admin/components/tasks/taskOfTable"
 
 const TasksAnalytics = () => {
     const {data, isLoading} = useQuery({
@@ -20,7 +21,7 @@ const TasksAnalytics = () => {
         isLoading ? <Skeleton className="w-full h-[200px] rounded-xl"/> :
                 <>
                     <div className="flex flex-col gap-4">
-                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 z-10">
                             <Card className="col-span-5 dark:bg-[#1a1a1a]">
                                 <CardHeader>
                                     <CardTitle>Number of Tasks Month by Month</CardTitle>
@@ -30,7 +31,7 @@ const TasksAnalytics = () => {
                                 </CardContent>
                             </Card>
                         </div>
-                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8 mb-20">
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8 mb-10">
                             <div className="lg:col-span-2 dark:bg-[#1a1a1a]">
                                 <TaskFrequencies data={data.frequency}/>
                             </div>
@@ -45,9 +46,11 @@ const TasksAnalytics = () => {
                             </div>
                         </div>
                         <div className="flex dark:bg-[#1a1a1a] p-3 rounded">
-                            <TasksTable/>
+                            <TaskOfTable/>
                         </div>
-
+                        <div className="flex mx-auto">
+                            <img src="/storage/app/illustrations/office.svg" alt="Well Done" className="filter drop-shadow-custom-blue "/>
+                        </div>
                     </div>
                 </>
     );

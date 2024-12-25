@@ -17,7 +17,7 @@ export const MyPagination = ({links, action}) => {
 
     return (
         links.length > 3 && (
-            <div className="mb-4 mx-auto">
+            <div className="mb-4 mx-auto flex justify-center">
                 <div className="flex flex-wrap mt-8 z-10  backdrop-blur-sm">
                     {links.map((link, key) => (
                         link.url === null ?

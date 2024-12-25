@@ -36,12 +36,7 @@
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-    color: black;
-    opacity: 1;
-    display: block;
-    width: 20px;
-    height: 20px;
-    border-width: thin;
+    filter: invert(1);
 }
 
 .custom-border {

@@ -20,6 +20,9 @@ input[type="search"]::-webkit-search-results-decoration {
   -webkit-appearance: none;
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+    color: black;
+}
 
 .form-input,
 .form-textarea,

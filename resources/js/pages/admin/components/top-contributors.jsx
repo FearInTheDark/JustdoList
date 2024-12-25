@@ -22,7 +22,7 @@ export function TopContributors() {
                             <AvatarImage src={`/storage/app/avatars/${user.image}`} alt="Avatar"/>
                             <AvatarFallback>{user.name.split(' ').map(e => e.charAt(0)).join()}</AvatarFallback>
                         </Avatar>
-                        <div className="ml-4 space-y-1">
+                        <div className="ml-4 space-y-1 overflow-hidden">
                             <p className="text-sm font-medium leading-none">{user.name}</p>
                             <p className="text-sm text-muted-foreground">
                                 {user.email}
