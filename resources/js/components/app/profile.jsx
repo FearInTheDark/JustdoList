@@ -108,7 +108,7 @@ const Profile = ({open, setOpen, user}) => {
                                 <span className="text-lg font-semibold font-tiktok text-gray-600 dark:text-gray-400">Submitted in the last 7 days</span>
                                 {isLoading ? <Skeleton className="w-full h-[200px] rounded-md"/> :
 
-                                    <ChartContainer config={chartConfig}>
+                                    <ChartContainer config={chartConfig} className="w-[90%] mx-auto ">
                                         <BarChart
                                             accessibilityLayer
                                             data={data}

@@ -15,7 +15,7 @@ export const SheetProvider = ({children}) => {
         if (window.location.pathname === '/') return;
         fetchTasks().then()
         const listener = (e) => {
-            if (e.ctrlKey && e.shiftKey && e.key === "L")
+            if (e.key === 'l')
                 setSheetOpen(pre => !pre)
             else if (e.key === "K") fetchTasks().then()
         }
